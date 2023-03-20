@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.33328.57
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingService", "CartingService\CartingService.csproj", "{3F85C8A6-7DFF-4B2C-BE29-84211A1C7EC8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingService.Tests", "CartingService.Tests\CartingService.Tests.csproj", "{B8902C38-4174-405C-BF76-F4AAD30BBBAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.DAL", "CatalogService.DAL\CatalogService.DAL.csproj", "{1E0E24CB-B7E1-446D-B2BB-CEBD48B52215}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.Domain", "CatalogService.Domain\CatalogService.Domain.csproj", "{2EF26ABD-5ADB-4F74-9075-8D9BAC1CC149}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.BLL", "CatalogService.BLL\CatalogService.BLL.csproj", "{2BFB7074-118C-423E-86CD-BE02451B34C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{B8902C38-4174-405C-BF76-F4AAD30BBBAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8902C38-4174-405C-BF76-F4AAD30BBBAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8902C38-4174-405C-BF76-F4AAD30BBBAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E0E24CB-B7E1-446D-B2BB-CEBD48B52215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E0E24CB-B7E1-446D-B2BB-CEBD48B52215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E0E24CB-B7E1-446D-B2BB-CEBD48B52215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E0E24CB-B7E1-446D-B2BB-CEBD48B52215}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EF26ABD-5ADB-4F74-9075-8D9BAC1CC149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EF26ABD-5ADB-4F74-9075-8D9BAC1CC149}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EF26ABD-5ADB-4F74-9075-8D9BAC1CC149}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EF26ABD-5ADB-4F74-9075-8D9BAC1CC149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BFB7074-118C-423E-86CD-BE02451B34C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BFB7074-118C-423E-86CD-BE02451B34C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BFB7074-118C-423E-86CD-BE02451B34C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BFB7074-118C-423E-86CD-BE02451B34C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

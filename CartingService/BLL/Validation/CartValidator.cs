@@ -1,13 +1,12 @@
 ﻿using CartingService.Domain;
 using FluentValidation;
 
-namespace CartingService.BLL.Validation
+namespace CartingService.BLL.Validation;
+
+public class CartValidator : AbstractValidator<Cart>
 {
-    public class CartValidator : AbstractValidator<Cart>
+    public CartValidator()
     {
-        public CartValidator()
-        {
-            RuleFor(cart => cart.Id).NotEmpty().WithMessage("Cart Id is required.");
-        }
+        RuleFor(cart => cart.Id).NotEmpty().WithMessage("Cart Id is required.");
     }
 }

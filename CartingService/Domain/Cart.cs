@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
+﻿namespace CartingService.Domain;
 
-namespace CartingService.Domain
+public class Cart
 {
-    public class Cart
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public List<Item> Items { get; set; } = new List<Item>();
-    }
+    public List<Item> Items { get; set; } = new List<Item>();
 }

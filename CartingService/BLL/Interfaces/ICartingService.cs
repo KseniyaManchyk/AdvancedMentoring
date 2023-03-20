@@ -1,16 +1,15 @@
 ﻿using CartingService.Domain;
 using System.Collections.Generic;
 
-namespace CartingService.BLL.Interfaces
+namespace CartingService.BLL.Interfaces;
+
+public interface ICartingService
 {
-    public interface ICartingService
-    {
-        Cart GetCartById(int cartId);
+    Cart GetCartById(int cartId);
 
-        IEnumerable<Item> GetCartItems(int cartId);
+    IEnumerable<Item> GetCartItems(int cartId);
 
-        void AddItemToCart(int cartId, Item item);
+    void AddItemToCart(int cartId, Item item);
 
-        void RemoveItemFromCart(int cartId, Item item);
-    }
+    void RemoveItemFromCart(int cartId, Item item);
 }

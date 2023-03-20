@@ -7,126 +7,125 @@ using System.IO;
 using System.Linq;
 using Xunit;
 
-namespace CartingService.Tests.IntegrationTests
+namespace CartingService.Tests.IntegrationTests;
+
+public class CartingRepositoryIntegrationTests : IDisposable
 {
-    public class CartingRepositoryIntegrationTests : IDisposable
+    private IRepository<Cart> _sut;
+
+    public CartingRepositoryIntegrationTests()
     {
-        private IRepository<Cart> _sut;
+        _sut = new CartingRepository(new LiteDBConnectionProvider(GetTestDBPath()));
+    }
 
-        public CartingRepositoryIntegrationTests()
+    public void Dispose()
+    {
+        var dbPath = GetTestDBPath();
+        if (File.Exists(dbPath))
         {
-            _sut = new CartingRepository(new LiteDBConnectionProvider(GetTestDBPath()));
+            File.Delete(dbPath);
         }
+    }
 
-        public void Dispose()
+    [Fact]
+    public void GetAllAndAdd_ShouldReturnCartsCollection()
+    {
+        var cartId = GenerateId();
+        var newCart = new Cart
         {
-            var dbPath = GetTestDBPath();
-            if (File.Exists(dbPath))
-            {
-                File.Delete(dbPath);
+            Items = new List<Item> {
+                new Item { Id = 1, Name = "Item 1", Price = 123, Quantity = 23 },
             }
-        }
+        };
 
-        [Fact]
-        public void GetAllAndAdd_ShouldReturnCartsCollection()
+        _sut.Add(cartId, newCart);
+        _sut.Add(cartId + 1, newCart);
+
+        var result = _sut.GetAll();
+
+        Assert.True(result.Count() > 1);
+    }
+
+    [Fact]
+    public void GetById_WhenCartExists_ShouldReturnCorrectCart()
+    {
+        var cartId = GenerateId();
+        var newCart = new Cart
         {
-            var cartId = GenerateId();
-            var newCart = new Cart
-            {
-                Items = new List<Item> {
-                    new Item { Id = 1, Name = "Item 1", Price = 123, Quantity = 23 },
-                }
-            };
+            Items = new List<Item> {
+                new Item { Id = 1, Name = "Item 1", Price = 123, Quantity = 23 },
+            }
+        };
 
-            _sut.Add(cartId, newCart);
-            _sut.Add(cartId + 1, newCart);
+        _sut.Add(cartId, newCart);
+        _sut.Add(cartId + 1, newCart);
 
-            var result = _sut.GetAll();
+        var result = _sut.GetById(cartId);
 
-            Assert.True(result.Count() > 1);
-        }
+        Assert.NotNull(result);
+    }
 
-        [Fact]
-        public void GetById_WhenCartExists_ShouldReturnCorrectCart()
+    [Fact]
+    public void Remove_ShouldCallDeleteAndCommitMethods()
+    {
+        var cartId = GenerateId();
+        var newCart = new Cart
         {
-            var cartId = GenerateId();
-            var newCart = new Cart
-            {
-                Items = new List<Item> {
-                    new Item { Id = 1, Name = "Item 1", Price = 123, Quantity = 23 },
-                }
-            };
+            Items = new List<Item> {
+                new Item { Id = 1, Name = "Item 1", Price = 123, Quantity = 23 },
+            }
+        };
 
-            _sut.Add(cartId, newCart);
-            _sut.Add(cartId + 1, newCart);
+        _sut.Add(cartId, newCart);
+        _sut.Add(cartId + 1, newCart);
 
-            var result = _sut.GetById(cartId);
+        _sut.Remove(cartId);
 
-            Assert.NotNull(result);
-        }
+        var result = _sut.GetById(cartId);
 
-        [Fact]
-        public void Remove_ShouldCallDeleteAndCommitMethods()
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void Update_ShouldCallUpdateAndCommitMethods()
+    {
+        var cartId = GenerateId();
+        var oldCart = new Cart
         {
-            var cartId = GenerateId();
-            var newCart = new Cart
-            {
-                Items = new List<Item> {
-                    new Item { Id = 1, Name = "Item 1", Price = 123, Quantity = 23 },
-                }
-            };
-
-            _sut.Add(cartId, newCart);
-            _sut.Add(cartId + 1, newCart);
-
-            _sut.Remove(cartId);
-
-            var result = _sut.GetById(cartId);
-
-            Assert.Null(result);
-        }
-
-        [Fact]
-        public void Update_ShouldCallUpdateAndCommitMethods()
+            Items = new List<Item> {
+                new Item { Id = 1, Name = "Item 1", Price = 123, Quantity = 23 },
+            }
+        };
+        var updatedName = "Updated Item 1";
+        var updatedCart = new Cart
         {
-            var cartId = GenerateId();
-            var oldCart = new Cart
-            {
-                Items = new List<Item> {
-                    new Item { Id = 1, Name = "Item 1", Price = 123, Quantity = 23 },
-                }
-            };
-            var updatedName = "Updated Item 1";
-            var updatedCart = new Cart
-            {
-                Items = new List<Item> {
-                    new Item { Id = 1, Name = updatedName, Price = 123, Quantity = 23 },
-                }
-            };
+            Items = new List<Item> {
+                new Item { Id = 1, Name = updatedName, Price = 123, Quantity = 23 },
+            }
+        };
 
-            _sut.Add(cartId, oldCart);
+        _sut.Add(cartId, oldCart);
 
-            var notUpdatedCart = _sut.GetById(cartId);
+        var notUpdatedCart = _sut.GetById(cartId);
 
-            Assert.True(notUpdatedCart.Items.First().Name != updatedName);
+        Assert.True(notUpdatedCart.Items.First().Name != updatedName);
 
-            _sut.Update(cartId, updatedCart);
+        _sut.Update(cartId, updatedCart);
 
-            var updatedCartResult = _sut.GetById(cartId);
+        var updatedCartResult = _sut.GetById(cartId);
 
-            Assert.True(updatedCartResult.Items.First().Name == updatedName);
-        }
+        Assert.True(updatedCartResult.Items.First().Name == updatedName);
+    }
 
-        private string GetTestDBPath()
-        {
-            var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-            return $@"{projectPath}/integration_tests.db";
-        }
+    private string GetTestDBPath()
+    {
+        var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+        return $@"{projectPath}/integration_tests.db";
+    }
 
-        private int GenerateId()
-        {
-            Random rnd = new Random();
-            return rnd.Next();
-        }
+    private int GenerateId()
+    {
+        Random rnd = new Random();
+        return rnd.Next();
     }
 }

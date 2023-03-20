@@ -1,9 +1,8 @@
-﻿namespace CartingService.Domain
-{
-    public class Image
-    {
-        public string AltText { get; set; }
+﻿namespace CartingService.Domain;
 
-        public string URL { get; set; }
-    }
+public class Image
+{
+    public string AltText { get; set; }
+
+    public string URL { get; set; }
 }

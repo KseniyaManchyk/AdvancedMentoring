@@ -1,9 +1,8 @@
 ﻿using LiteDB;
 
-namespace CartingService.DAL.Interfaces
+namespace CartingService.DAL.Interfaces;
+
+public interface ILiteDBConnectionProvider
 {
-    public interface ILiteDBConnectionProvider
-    {
-        ILiteDatabase GetConnection();
-    }
+    ILiteDatabase GetConnection();
 }

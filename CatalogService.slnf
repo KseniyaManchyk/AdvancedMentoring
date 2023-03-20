@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "AdvancedMentoring.sln",
+    "projects": [
+      "CatalogService.BLL\\CatalogService.BLL.csproj",
+      "CatalogService.DAL\\CatalogService.DAL.csproj",
+      "CatalogService.Domain\\CatalogService.Domain.csproj"
+    ]
+  }
+}
