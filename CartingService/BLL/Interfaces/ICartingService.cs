@@ -1,5 +1,4 @@
 ﻿using CartingService.Domain;
-using System.Collections.Generic;
 
 namespace CartingService.BLL.Interfaces;
 

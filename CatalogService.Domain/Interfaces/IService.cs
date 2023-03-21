@@ -2,7 +2,7 @@
 
 namespace CatalogService.Domain.Interfaces;
 
-public interface IRepository<TEntity> where TEntity : class
+public interface IService<TEntity> where TEntity : class
 {
     IEnumerable<TEntity> GetAll();
 

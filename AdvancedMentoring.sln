@@ -7,11 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingService", "CartingSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingService.Tests", "CartingService.Tests\CartingService.Tests.csproj", "{B8902C38-4174-405C-BF76-F4AAD30BBBAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.DAL", "CatalogService.DAL\CatalogService.DAL.csproj", "{1E0E24CB-B7E1-446D-B2BB-CEBD48B52215}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.DAL", "CatalogService.DAL\CatalogService.DAL.csproj", "{1E0E24CB-B7E1-446D-B2BB-CEBD48B52215}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.Domain", "CatalogService.Domain\CatalogService.Domain.csproj", "{2EF26ABD-5ADB-4F74-9075-8D9BAC1CC149}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.Domain", "CatalogService.Domain\CatalogService.Domain.csproj", "{2EF26ABD-5ADB-4F74-9075-8D9BAC1CC149}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.BLL", "CatalogService.BLL\CatalogService.BLL.csproj", "{2BFB7074-118C-423E-86CD-BE02451B34C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.BLL", "CatalogService.BLL\CatalogService.BLL.csproj", "{2BFB7074-118C-423E-86CD-BE02451B34C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.BLL.Tests", "CatalogService.BLL.Tests\CatalogService.BLL.Tests.csproj", "{7A259E00-C423-4BA2-8FA3-F1B87DEA1164}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.DAL.Tests", "CatalogService.DAL.Tests\CatalogService.DAL.Tests.csproj", "{68AFB4BF-12A8-40E2-A18C-40F5B6E0811E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{2BFB7074-118C-423E-86CD-BE02451B34C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BFB7074-118C-423E-86CD-BE02451B34C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BFB7074-118C-423E-86CD-BE02451B34C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A259E00-C423-4BA2-8FA3-F1B87DEA1164}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A259E00-C423-4BA2-8FA3-F1B87DEA1164}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A259E00-C423-4BA2-8FA3-F1B87DEA1164}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A259E00-C423-4BA2-8FA3-F1B87DEA1164}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68AFB4BF-12A8-40E2-A18C-40F5B6E0811E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68AFB4BF-12A8-40E2-A18C-40F5B6E0811E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68AFB4BF-12A8-40E2-A18C-40F5B6E0811E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68AFB4BF-12A8-40E2-A18C-40F5B6E0811E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

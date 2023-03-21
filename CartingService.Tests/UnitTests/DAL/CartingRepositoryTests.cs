@@ -3,9 +3,7 @@ using CartingService.DAL.Interfaces;
 using CartingService.Domain;
 using System.Collections.Generic;
 using System.Linq;
-using Moq;
 using LiteDB;
-using Xunit;
 
 namespace CartingService.Tests.UnitTests.DAL;
 
