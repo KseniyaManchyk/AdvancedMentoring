@@ -1,6 +1,7 @@
 using CatalogService.BLL.Services;
 using CatalogService.Domain.Interfaces;
 using CatalogService.Domain.Models;
+using FluentValidation;
 
 namespace CatalogService.BLL.Tests;
 
@@ -8,83 +9,85 @@ public class CategoryServiceTests
 {
     private IService<Category> _sut;
     private Mock<IRepository<Category>> _repositoryMock;
+    private Mock<AbstractValidator<Category>> _validatorMock;
 
     public CategoryServiceTests()
     {
         _repositoryMock = new Mock<IRepository<Category>>();
-        _sut = new CategoryService(_repositoryMock.Object);
+        _validatorMock = new Mock<AbstractValidator<Category>>();
+        _sut = new CategoryService(_repositoryMock.Object, _validatorMock.Object);
     }
 
     [Fact]
-    public void GetAll_ShouldCallGetAllRepositoryMethod()
+    public async Task GetAllAsync_ShouldCallGetAllRepositoryMethod()
     {
         _repositoryMock
-            .Setup(x => x.GetAll())
-            .Returns(new List<Category> { new Category() });
+            .Setup(x => x.GetAllAsync())
+            .ReturnsAsync(new List<Category> { new Category() });
 
-        var result = _sut.GetAll();
+        var result = await _sut.GetAllAsync ();
 
-        _repositoryMock.Verify(x => x.GetAll(), Times.Once);
+        _repositoryMock.Verify(x => x.GetAllAsync(), Times.Once);
         Assert.True(result.Count() != 0);
     }
 
     [Fact]
-    public void GetByExpression_ShouldCallGetByExpressionRepositoryMethod()
+    public async Task GetByExpressionAsync_ShouldCallGetByExpressionRepositoryMethod()
     {
         Func<Category, bool> predicate = (category) => category.Name == "test";
 
         _repositoryMock
-            .Setup(x => x.GetByExpression(predicate))
-            .Returns(new List<Category> { new Category() });
+            .Setup(x => x.GetByExpressionAsync(predicate))
+            .ReturnsAsync(new List<Category> { new Category() });
 
-        var result = _sut.GetByExpression(predicate);
+        var result = await _sut.GetByExpressionAsync(predicate);
 
-        _repositoryMock.Verify(x => x.GetByExpression(predicate), Times.Once);
+        _repositoryMock.Verify(x => x.GetByExpressionAsync(predicate), Times.Once);
         Assert.True(result.Count() != 0);
     }
 
     [Fact]
-    public void GetById_ShouldCallGetByIdRepositoryMethod()
+    public async Task GetByIdAsync_ShouldCallGetByIdRepositoryMethod()
     {
         var id = 1;
 
         _repositoryMock
-            .Setup(x => x.GetById(id))
-            .Returns(new Category());
+            .Setup(x => x.GetByIdAsync(id))
+            .ReturnsAsync(new Category());
 
-        var result = _sut.GetById(id);
+        var result = await _sut.GetByIdAsync(id);
 
-        _repositoryMock.Verify(x => x.GetById(id), Times.Once);
+        _repositoryMock.Verify(x => x.GetByIdAsync(id), Times.Once);
         Assert.NotNull(result);
     }
 
     [Fact]
-    public void Add_ShouldCallAddRepositoryMethod()
+    public async Task AddAsync_ShouldCallAddRepositoryMethod()
     {
         var newCategory = new Category();
 
-        _sut.Add(newCategory);
+        await _sut.AddAsync(newCategory);
 
-        _repositoryMock.Verify(x => x.Add(newCategory), Times.Once);
+        _repositoryMock.Verify(x => x.AddAsync(newCategory), Times.Once);
     }
 
     [Fact]
-    public void Update_ShouldCallUpdateRepositoryMethod()
+    public async Task UpdateAsync_ShouldCallUpdateRepositoryMethod()
     {
         var category = new Category();
 
-        _sut.Update(category);
+        await _sut.UpdateAsync(category);
 
-        _repositoryMock.Verify(x => x.Update(category), Times.Once);
+        _repositoryMock.Verify(x => x.UpdateAsync(category), Times.Once);
     }
 
     [Fact]
-    public void Delete_ShouldCallDeleteRepositoryMethod()
+    public async Task DeleteAsync_ShouldCallDeleteRepositoryMethod()
     {
         var category = new Category();
 
-        _sut.Delete(category);
+        await _sut.DeleteAsync(category);
 
-        _repositoryMock.Verify(x => x.Delete(category), Times.Once);
+        _repositoryMock.Verify(x => x.DeleteAsync(category), Times.Once);
     }
 }

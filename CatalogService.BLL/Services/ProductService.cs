@@ -1,5 +1,6 @@
 ﻿using CatalogService.Domain.Interfaces;
 using CatalogService.Domain.Models;
+using FluentValidation;
 
 namespace CatalogService.BLL.Services;
 
@@ -7,39 +8,46 @@ namespace CatalogService.BLL.Services;
 public class ProductService : IService<Product>
 {
     private IRepository<Product> _productRepository;
+    private AbstractValidator<Product> _productValidator;
 
-    public ProductService(IRepository<Product> productRepository)
+    public ProductService(
+        IRepository<Product> productRepository,
+        AbstractValidator<Product> productValidator
+        )
     {
         _productRepository = productRepository;
+        _productValidator = productValidator;
     }
 
-    public IEnumerable<Product> GetAll()
+    public async Task<IEnumerable<Product>> GetAllAsync()
     {
-        return _productRepository.GetAll();
+        return await _productRepository.GetAllAsync();
     }
 
-    public IEnumerable<Product> GetByExpression(Func<Product, bool> predicate)
+    public async Task<IEnumerable<Product>> GetByExpressionAsync(Func<Product, bool> predicate)
     {
-        return _productRepository.GetByExpression(predicate);
+        return await _productRepository.GetByExpressionAsync(predicate);
     }
 
-    public Product GetById(int id)
+    public async Task<Product> GetByIdAsync(int id)
     {
-        return _productRepository.GetById(id);
+        return await _productRepository.GetByIdAsync(id);
     }
 
-    public void Add(Product item)
+    public async Task AddAsync(Product item)
     {
-        _productRepository.Add(item);
+        _productValidator.ValidateAndThrow(item);
+        await _productRepository.AddAsync(item);
     }
 
-    public void Update(Product item)
+    public async Task UpdateAsync(Product item)
     {
-        _productRepository.Update(item);
+        _productValidator.ValidateAndThrow(item);
+        await _productRepository.UpdateAsync(item);
     }
 
-    public void Delete(Product item)
+    public async Task DeleteAsync(Product item)
     {
-        _productRepository.Delete(item);
+        await _productRepository.DeleteAsync(item);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CatalogService.Domain.Interfaces;
 using CatalogService.Domain.Models;
+using FluentValidation;
 
 namespace CatalogService.BLL.Services;
 
@@ -7,39 +8,46 @@ namespace CatalogService.BLL.Services;
 public class CategoryService : IService<Category>
 {
     private IRepository<Category> _categoryRepository;
+    private AbstractValidator<Category> _categoryValidator;
 
-    public CategoryService(IRepository<Category> categoryRepository)
+    public CategoryService(
+        IRepository<Category> categoryRepository,
+        AbstractValidator<Category> categoryValidator
+        )
     {
         _categoryRepository = categoryRepository;
+        _categoryValidator = categoryValidator;
     }
 
-    public IEnumerable<Category> GetAll()
+    public async Task<IEnumerable<Category>> GetAllAsync()
     {
-        return _categoryRepository.GetAll();
+        return await _categoryRepository.GetAllAsync();
     }
 
-    public IEnumerable<Category> GetByExpression(Func<Category, bool> predicate)
+    public async Task<IEnumerable<Category>> GetByExpressionAsync(Func<Category, bool> predicate)
     {
-        return _categoryRepository.GetByExpression(predicate);
+        return await _categoryRepository.GetByExpressionAsync(predicate);
     }
 
-    public Category GetById(int id)
+    public async Task<Category> GetByIdAsync(int id)
     {
-        return _categoryRepository.GetById(id);
+        return await _categoryRepository.GetByIdAsync(id);
     }
 
-    public void Add(Category item)
+    public async Task AddAsync(Category item)
     {
-        _categoryRepository.Add(item);
+        _categoryValidator.ValidateAndThrow(item);
+        await _categoryRepository.AddAsync(item);
     }
 
-    public void Update(Category item)
+    public async Task UpdateAsync(Category item)
     {
-        _categoryRepository.Update(item);
+        _categoryValidator.ValidateAndThrow(item);
+        await _categoryRepository.UpdateAsync(item);
     }
 
-    public void Delete(Category item)
+    public async Task DeleteAsync(Category item)
     {
-        _categoryRepository.Delete(item);
+        await _categoryRepository.DeleteAsync(item);
     }
 }

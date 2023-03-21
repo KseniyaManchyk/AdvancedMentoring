@@ -1,18 +1,16 @@
-﻿using System.Linq.Expressions;
-
-namespace CatalogService.Domain.Interfaces;
+﻿namespace CatalogService.Domain.Interfaces;
 
 public interface IService<TEntity> where TEntity : class
 {
-    IEnumerable<TEntity> GetAll();
+    Task<IEnumerable<TEntity>> GetAllAsync();
 
-    IEnumerable<TEntity> GetByExpression(Func<TEntity, bool> predicate);
+    Task<IEnumerable<TEntity>> GetByExpressionAsync(Func<TEntity, bool> predicate);
 
-    TEntity GetById(int id);
+    Task<TEntity> GetByIdAsync(int id);
 
-    void Add(TEntity item);
+    Task AddAsync(TEntity item);
 
-    void Update(TEntity item);
+    Task UpdateAsync(TEntity item);
 
-    void Delete(TEntity item);
+    Task DeleteAsync(TEntity item);
 }

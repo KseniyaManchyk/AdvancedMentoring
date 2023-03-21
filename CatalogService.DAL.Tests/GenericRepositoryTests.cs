@@ -29,62 +29,62 @@ namespace CatalogService.DAL.Tests
         }
 
         [Fact]
-        public void GetAll_WhenCategoriesExist_ShouldReturnAllCategories()
+        public async Task GetAll_WhenCategoriesExist_ShouldReturnAllCategories()
         {
             using var context = new CatalogServiceContext(_contextOptions);
             var repository = new GenericRepository<Category>(context);
 
-            var result = repository.GetAll();
+            var result = await repository.GetAllAsync();
 
             Assert.True(result.Count() > 0);
         }
 
         [Fact]
-        public void GetByExpression_WhenApropriateDataExist_ShouldReturnData()
+        public async Task GetByExpression_WhenApropriateDataExist_ShouldReturnData()
         {
             using var context = new CatalogServiceContext(_contextOptions);
             var repository = new GenericRepository<Category>(context);
             Func<Category, bool> predicate = (category) => category.Name.StartsWith(CATEGORY_NAME_PREFIX);
 
-            var result = repository.GetByExpression(predicate);
+            var result = await repository.GetByExpressionAsync(predicate);
 
             Assert.True(result.Count() > 0);
         }
 
         [Fact]
-        public void GetByExpression_WhenApropriateDataDoNotExist_ShouldReturnEmptyCollection()
+        public async Task GetByExpression_WhenApropriateDataDoNotExist_ShouldReturnEmptyCollection()
         {
             using var context = new CatalogServiceContext(_contextOptions);
             var repository = new GenericRepository<Category>(context);
             Func<Category, bool> predicate = (category) => category.Name == "test";
 
-            var result = repository.GetByExpression(predicate);
+            var result = await repository.GetByExpressionAsync(predicate);
 
             Assert.Empty(result);
         }
 
         [Fact]
-        public void GetById_WhenCategoryExist_ShouldReturnCategoryById()
+        public async Task GetById_WhenCategoryExist_ShouldReturnCategoryById()
         {
             using var context = new CatalogServiceContext(_contextOptions);
             var repository = new GenericRepository<Category>(context);
             var id = 1;
 
-            var result = repository.GetById(id);
+            var result = await repository.GetByIdAsync(id);
 
             Assert.NotNull(result);
         }
 
         [Fact]
-        public void Add_ShouldAddRecord()
+        public async Task Add_ShouldAddRecord()
         {
             using var context = new CatalogServiceContext(_contextOptions);
             var repository = new GenericRepository<Category>(context);
             var newCategory = GenerateData();
 
-            repository.Add(newCategory);
+            await repository.AddAsync(newCategory);
 
-            var addedCategory = repository.GetById(newCategory.Id);
+            var addedCategory = await repository.GetByIdAsync(newCategory.Id);
             Assert.NotNull(addedCategory);
             Assert.True(
                 newCategory.Id == addedCategory.Id &&
@@ -93,12 +93,12 @@ namespace CatalogService.DAL.Tests
         }
 
         [Fact]
-        public void Update_ShouldUpdateRecord()
+        public async Task Update_ShouldUpdateRecord()
         {
             using var firstContext = new CatalogServiceContext(_contextOptions);
             var repository = new GenericRepository<Category>(firstContext);
             var category = GenerateData();
-            repository.Add(category);
+            await repository.AddAsync(category);
 
             using var secondContext = new CatalogServiceContext(_contextOptions);
             repository = new GenericRepository<Category>(secondContext);
@@ -109,28 +109,28 @@ namespace CatalogService.DAL.Tests
                 Name = newCategoryName,
             };
             
-            repository.Update(updatingCategory);
+            await repository.UpdateAsync(updatingCategory);
 
-            var updatedCategory = repository.GetById(category.Id);
+            var updatedCategory = await repository.GetByIdAsync(category.Id);
             Assert.True(updatedCategory.Name == newCategoryName);
         }
 
         [Fact]
-        public void Delete_ShouldDeleteRecord()
+        public async Task Delete_ShouldDeleteRecord()
         {
             using var firstContext = new CatalogServiceContext(_contextOptions);
             var repository = new GenericRepository<Category>(firstContext);
             var category = GenerateData();
 
-            repository.Add(category);
-            var addedCategory = repository.GetById(category.Id);
+            await repository.AddAsync(category);
+            var addedCategory = await repository.GetByIdAsync(category.Id);
 
             Assert.NotNull(addedCategory);
 
             using var secondContext = new CatalogServiceContext(_contextOptions);
             repository = new GenericRepository<Category>(secondContext);
-            repository.Delete(category);
-            var removedCategory = repository.GetById(category.Id);
+            await repository.DeleteAsync(category);
+            var removedCategory = await repository.GetByIdAsync(category.Id);
 
             Assert.Null(removedCategory);
         }

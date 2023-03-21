@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace CatalogService.Domain.Interfaces;
 
@@ -14,37 +13,43 @@ public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : c
         _dbSet = context.Set<TEntity>();
     }
 
-    public IEnumerable<TEntity> GetAll()
+    public async Task<IEnumerable<TEntity>> GetAllAsync()
     {
-        return _dbSet.AsNoTracking().ToList();
+        return 
+            await _dbSet.AsNoTracking()
+                        .ToAsyncEnumerable()
+                        .ToListAsync();
     }
 
-    public IEnumerable<TEntity> GetByExpression(Func<TEntity, bool> predicate)
+    public async Task<IEnumerable<TEntity>> GetByExpressionAsync(Func<TEntity, bool> predicate)
     {
-        return _dbSet.AsNoTracking().Where(predicate).ToList();
+        return 
+            await _dbSet.AsNoTracking()
+                        .Where(predicate)
+                        .ToAsyncEnumerable()
+                        .ToListAsync();
     }
 
-    public TEntity GetById(int id)
+    public async Task<TEntity> GetByIdAsync(int id)
     {
-        return _dbSet.Find(id);
+        return await _dbSet.FindAsync(id);
     }
 
-    public void Add(TEntity item)
+    public async Task AddAsync(TEntity item)
     {
         _dbSet.Add(item);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Update(TEntity item)
+    public async Task UpdateAsync(TEntity item)
     {
-        //_context.Entry(item).State = EntityState.Modified;
         _context.Update(item);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(TEntity item)
+    public async Task DeleteAsync(TEntity item)
     {
         _dbSet.Remove(item);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

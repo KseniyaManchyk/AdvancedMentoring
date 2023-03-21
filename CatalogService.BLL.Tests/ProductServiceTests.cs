@@ -1,6 +1,7 @@
 using CatalogService.BLL.Services;
 using CatalogService.Domain.Interfaces;
 using CatalogService.Domain.Models;
+using FluentValidation;
 
 namespace CatalogService.BLL.Tests;
 
@@ -8,83 +9,85 @@ public class ProductServiceTests
 {
     private IService<Product> _sut;
     private Mock<IRepository<Product>> _repositoryMock;
+    private Mock<AbstractValidator<Product>> _validatorMock;
 
     public ProductServiceTests()
     {
         _repositoryMock = new Mock<IRepository<Product>>();
-        _sut = new ProductService(_repositoryMock.Object);
+        _validatorMock = new Mock<AbstractValidator<Product>>();
+        _sut = new ProductService(_repositoryMock.Object, _validatorMock.Object);
     }
 
     [Fact]
-    public void GetAll_ShouldCallGetAllRepositoryMethod()
+    public async Task GetAllAsync_ShouldCallGetAllRepositoryMethod()
     {
         _repositoryMock
-            .Setup(x => x.GetAll())
-            .Returns(new List<Product> { new Product() });
+            .Setup(x => x.GetAllAsync())
+            .ReturnsAsync(new List<Product> { new Product() });
 
-        var result = _sut.GetAll();
+        var result = await _sut.GetAllAsync();
 
-        _repositoryMock.Verify(x => x.GetAll(), Times.Once);
+        _repositoryMock.Verify(x => x.GetAllAsync(), Times.Once);
         Assert.True(result.Count() != 0);
     }
 
     [Fact]
-    public void GetByExpression_ShouldCallGetByExpressionRepositoryMethod()
+    public async Task GetByExpressionAsync_ShouldCallGetByExpressionRepositoryMethod()
     {
         Func<Product, bool> predicate = (product) => product.Name == "test";
 
         _repositoryMock
-            .Setup(x => x.GetByExpression(predicate))
-            .Returns(new List<Product> { new Product() });
+            .Setup(x => x.GetByExpressionAsync(predicate))
+            .ReturnsAsync(new List<Product> { new Product() });
 
-        var result = _sut.GetByExpression(predicate);
+        var result = await _sut.GetByExpressionAsync(predicate);
 
-        _repositoryMock.Verify(x => x.GetByExpression(predicate), Times.Once);
+        _repositoryMock.Verify(x => x.GetByExpressionAsync(predicate), Times.Once);
         Assert.True(result.Count() != 0);
     }
 
     [Fact]
-    public void GetById_ShouldCallGetByIdRepositoryMethod()
+    public async Task GetByIdAsync_ShouldCallGetByIdRepositoryMethod()
     {
         var id = 1;
 
         _repositoryMock
-            .Setup(x => x.GetById(id))
-            .Returns(new Product());
+            .Setup(x => x.GetByIdAsync(id))
+            .ReturnsAsync(new Product());
 
-        var result = _sut.GetById(id);
+        var result = await _sut.GetByIdAsync(id);
 
-        _repositoryMock.Verify(x => x.GetById(id), Times.Once);
+        _repositoryMock.Verify(x => x.GetByIdAsync(id), Times.Once);
         Assert.NotNull(result);
     }
 
     [Fact]
-    public void Add_ShouldCallAddRepositoryMethod()
+    public async Task AddAsync_ShouldCallAddRepositoryMethod()
     {
         var newProduct = new Product();
 
-        _sut.Add(newProduct);
+        await _sut.AddAsync(newProduct);
 
-        _repositoryMock.Verify(x => x.Add(newProduct), Times.Once);
+        _repositoryMock.Verify(x => x.AddAsync(newProduct), Times.Once);
     }
 
     [Fact]
-    public void Update_ShouldCallUpdateRepositoryMethod()
+    public async Task UpdateAsync_ShouldCallUpdateRepositoryMethod()
     {
         var product = new Product();
 
-        _sut.Update(product);
+        await _sut.UpdateAsync(product);
 
-        _repositoryMock.Verify(x => x.Update(product), Times.Once);
+        _repositoryMock.Verify(x => x.UpdateAsync(product), Times.Once);
     }
 
     [Fact]
-    public void Delete_ShouldCallDeleteRepositoryMethod()
+    public async Task DeleteAsync_ShouldCallDeleteRepositoryMethod()
     {
         var product = new Product();
 
-        _sut.Delete(product);
+        await _sut.DeleteAsync(product);
 
-        _repositoryMock.Verify(x => x.Delete(product), Times.Once);
+        _repositoryMock.Verify(x => x.DeleteAsync(product), Times.Once);
     }
 }
