@@ -5,8 +5,11 @@ namespace CatalogService.DAL;
 
 public partial class CatalogServiceContext : DbContext
 {
-    public CatalogServiceContext()
+    private readonly string _connectionString;
+
+    public CatalogServiceContext(string connectionString)
     {
+        _connectionString = connectionString;
     }
 
     public CatalogServiceContext(DbContextOptions<CatalogServiceContext> options)
@@ -22,8 +25,7 @@ public partial class CatalogServiceContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            // should be moved into config in the future
-            optionsBuilder.UseSqlServer("Server=DESKTOP-3PKISU6;Initial Catalog=CatalogService;TrustServerCertificate=True;User ID=kseniya_manchyk;Password=050699;");
+            optionsBuilder.UseSqlServer(_connectionString);
         }
         
     }

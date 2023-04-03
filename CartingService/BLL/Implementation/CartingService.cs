@@ -25,14 +25,7 @@ public class CartingService : ICartingService
     // Added for convinience
     public Cart GetCartById(int cartId)
     {
-        var cart = _cartingRepository.GetById(cartId);
-
-        if (cart is null)
-        {
-            throw new ArgumentException($"{nameof(cartId)} is not valid. System does not contain cart with this id.");
-        }
-
-        return cart;
+        return _cartingRepository.GetById(cartId);
     }
 
     public IEnumerable<Item> GetCartItems(int cartId)
@@ -67,7 +60,7 @@ public class CartingService : ICartingService
     {
         var cart = _cartingRepository.GetById(cartId);
 
-        if(cart is null)
+        if (cart is null)
         {
             throw new ArgumentException($"{nameof(cartId)} is not valid. System does not contain cart with this id.");
         }

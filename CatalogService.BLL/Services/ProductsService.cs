@@ -1,16 +1,16 @@
-﻿using CatalogService.Domain.Interfaces;
+﻿using CatalogService.Domain.ExceptionHandling;
+using CatalogService.Domain.Interfaces;
 using CatalogService.Domain.Models;
 using FluentValidation;
 
 namespace CatalogService.BLL.Services;
 
-// Has almost the same logic as CategoryService, separated for the future
-public class ProductService : IService<Product>
+public class ProductsService : IService<Product>
 {
     private IRepository<Product> _productRepository;
     private AbstractValidator<Product> _productValidator;
 
-    public ProductService(
+    public ProductsService(
         IRepository<Product> productRepository,
         AbstractValidator<Product> productValidator
         )
@@ -34,20 +34,27 @@ public class ProductService : IService<Product>
         return await _productRepository.GetByIdAsync(id);
     }
 
-    public async Task AddAsync(Product item)
+    public async Task AddAsync(Product product)
     {
-        _productValidator.ValidateAndThrow(item);
-        await _productRepository.AddAsync(item);
+        _productValidator.ValidateAndThrow(product);
+        await _productRepository.AddAsync(product);
     }
 
-    public async Task UpdateAsync(Product item)
+    public async Task UpdateAsync(Product product)
     {
-        _productValidator.ValidateAndThrow(item);
-        await _productRepository.UpdateAsync(item);
+        _productValidator.ValidateAndThrow(product);
+        await _productRepository.UpdateAsync(product);
     }
 
-    public async Task DeleteAsync(Product item)
+    public async Task DeleteAsync(Product product)
     {
-        await _productRepository.DeleteAsync(item);
+        var foundProduct = await _productRepository.GetByIdAsync(product.Id);
+
+        if (foundProduct is null)
+        {
+            throw new NotFoundException(nameof(Product));
+        }
+
+        await _productRepository.DeleteAsync(product);
     }
 }

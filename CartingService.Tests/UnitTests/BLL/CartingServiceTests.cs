@@ -40,13 +40,6 @@ public class CartingServiceTests
         Assert.Equal(expectedCart, result);
     }
 
-
-    [Fact]
-    public void GetById_WhenCartDoesNotExist_ShouldThrowException()
-    {
-        Assert.Throws<ArgumentException>(() => _sut.GetCartById(1));
-    }
-
     [Fact]
     public void GetCartItems_WhenCartExists_ShouldReturnCorrectItemsCollection()
     {
