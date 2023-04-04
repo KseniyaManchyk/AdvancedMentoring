@@ -38,9 +38,13 @@ namespace CatalogService.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(Category category)
         {
-            await _categoriesService.AddAsync(category).ConfigureAwait(false);
+            var addedCategory = await _categoriesService.AddAsync(category).ConfigureAwait(false);
 
-            return NoContent();
+            return Created(_helpUrlBuilder.BuildUrl(Request), new ResponseModel<Category>
+            {
+                Items = new List<Category> { addedCategory },
+                NextLink = _helpUrlBuilder.BuildUrl(Request, productsPath)
+            });
         }
 
         [HttpPut]

@@ -1,23 +1,17 @@
-using CatalogService.Domain.Interfaces;
-using CatalogService.Domain.Models;
-using CatalogService.WebApi.Controllers;
-using CatalogService.WebApi.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-
 namespace CatalogService.WebApi.Tests
 {
     public class CategoriesControllerTests
     {
         private CategoriesController _sut;
         private Mock<IService<Category>> _categoriesServiceMock;
+        private Mock<IHelpUrlBuilder> _helpUrlBuilder;
 
         public CategoriesControllerTests()
         {
             _categoriesServiceMock = new Mock<IService<Category>>();
-            var helpUrlBuilder = new Mock<IHelpUrlBuilder>();
+            _helpUrlBuilder = new Mock<IHelpUrlBuilder>();
 
-            _sut = new CategoriesController(_categoriesServiceMock.Object, helpUrlBuilder.Object);
+            _sut = new CategoriesController(_categoriesServiceMock.Object, _helpUrlBuilder.Object);
         }
 
         [Fact]
@@ -34,10 +28,14 @@ namespace CatalogService.WebApi.Tests
         {
             var newCategory = new Category();
 
+            _helpUrlBuilder
+                .Setup(x => x.BuildUrl(It.IsAny<HttpRequest>(), It.IsAny<string>()))
+                .Returns("https://test");
+
             var result = await _sut.Post(newCategory);
 
             _categoriesServiceMock.Verify(x => x.AddAsync(newCategory), Times.Once);
-            Assert.IsType<NoContentResult>(result);
+            Assert.IsType<CreatedResult>(result);
         }
 
         [Fact]

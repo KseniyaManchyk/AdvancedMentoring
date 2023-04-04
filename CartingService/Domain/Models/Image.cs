@@ -1,4 +1,4 @@
-﻿namespace CartingService.Domain;
+﻿namespace CartingService.Domain.Models;
 
 public class Image
 {

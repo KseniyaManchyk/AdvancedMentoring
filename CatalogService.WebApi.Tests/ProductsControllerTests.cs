@@ -1,11 +1,3 @@
-using CatalogService.Domain.Interfaces;
-using CatalogService.Domain.Models;
-using CatalogService.WebApi.Controllers;
-using CatalogService.WebApi.Extensions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-
 namespace CatalogService.WebApi.Tests
 {
     public class ProductsControllerTests

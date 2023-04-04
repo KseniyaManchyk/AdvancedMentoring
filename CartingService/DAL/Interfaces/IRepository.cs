@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
+﻿namespace CartingService.DAL.Interfaces;
 
-namespace CartingService.DAL.Interfaces;
-
-public interface IRepository<TEntity> where TEntity : class
+public interface IRepository<TEntity, TIdentifier> where TEntity : class
 {
     IEnumerable<TEntity> GetAll();
 
-    TEntity GetById(int id);
+    TEntity GetById(TIdentifier id);
 
-    void Add(int id, TEntity item);
+    void Add(TIdentifier id, TEntity item);
 
-    void Update(int id, TEntity item);
+    void Update(TIdentifier id, TEntity item);
 
-    void Remove(int id);
+    void Remove(TIdentifier id);
 }

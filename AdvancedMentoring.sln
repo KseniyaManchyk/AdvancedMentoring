@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.WebApi", "Ca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.DI", "CatalogService.DI\CatalogService.DI.csproj", "{C7B6FBFA-BCBE-45EF-80C7-9A32B0DF2604}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.WebApi.Tests", "CatalogService.WebApi.Tests\CatalogService.WebApi.Tests.csproj", "{A6FB0580-81E4-499E-ACF4-94AC2923E787}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.WebApi.Tests", "CatalogService.WebApi.Tests\CatalogService.WebApi.Tests.csproj", "{A6FB0580-81E4-499E-ACF4-94AC2923E787}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartingService.WebApi.Tests", "CartingService.WebApi.Tests\CartingService.WebApi.Tests.csproj", "{0D5C6D44-EBAE-4534-A6AC-625459C706B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{A6FB0580-81E4-499E-ACF4-94AC2923E787}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6FB0580-81E4-499E-ACF4-94AC2923E787}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6FB0580-81E4-499E-ACF4-94AC2923E787}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D5C6D44-EBAE-4534-A6AC-625459C706B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D5C6D44-EBAE-4534-A6AC-625459C706B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D5C6D44-EBAE-4534-A6AC-625459C706B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D5C6D44-EBAE-4534-A6AC-625459C706B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

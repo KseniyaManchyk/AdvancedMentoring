@@ -24,8 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CatalogService.Domain\CatalogService.Domain.csproj" />
-    <ProjectReference Include="..\CatalogService.WebApi\CatalogService.WebApi.csproj" />
+    <ProjectReference Include="..\CartingService.WebApi\CartingService.WebApi.csproj" />
   </ItemGroup>
 
 </Project>

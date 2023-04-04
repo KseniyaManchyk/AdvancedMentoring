@@ -1,16 +1,16 @@
 ﻿using CartingService.BLL.Interfaces;
 using CartingService.BLL.Validation;
-using CartingService.Domain;
+using CartingService.Domain.Models;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CartingService.DAL
+namespace CartingService.BLL
 {
     public static class DependencyInjectionBLLExtensions
     {
-        public static IServiceCollection RegisterBLLServices(this IServiceCollection services)
+        public static IServiceCollection AddBLLServices(this IServiceCollection services)
         {
-            services.AddScoped<ICartingService, BLL.Implementation.CartingService>();
+            services.AddScoped<ICartsService, Implementation.CartsService>();
             services.AddScoped<AbstractValidator<Cart>, CartValidator>();
             services.AddScoped<AbstractValidator<Item>, ItemValidator>();
             return services;

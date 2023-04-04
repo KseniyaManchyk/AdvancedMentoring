@@ -36,10 +36,11 @@ namespace CatalogService.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(Product product)
         {
-            await _productsService.AddAsync(product).ConfigureAwait(false);
+            var addedProduct = await _productsService.AddAsync(product).ConfigureAwait(false);
 
-            return Created(_helpUrlBuilder.BuildUrl(Request), new ResponseModel<Category>
+            return Created(_helpUrlBuilder.BuildUrl(Request), new ResponseModel<Product>
             {
+                Items = new List<Product> { addedProduct },
                 NextLink = _helpUrlBuilder.BuildUrl(Request, categoriesPath)
             });
         }

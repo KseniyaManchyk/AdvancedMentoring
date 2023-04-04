@@ -34,10 +34,21 @@ public class ProductsService : IService<Product>
         return await _productRepository.GetByIdAsync(id);
     }
 
-    public async Task AddAsync(Product product)
+    public async Task<Product> AddAsync(Product product)
     {
         _productValidator.ValidateAndThrow(product);
         await _productRepository.AddAsync(product);
+
+        var addedProduct = await _productRepository
+                           .GetByExpressionAsync(p =>
+                                                   p.Name == product.Name &&
+                                                   p.Description == product.Description &&
+                                                   p.Price == product.Price &&
+                                                   p.Amount == product.Amount &&
+                                                   p.CategoryId == product.CategoryId &&
+                                                   p.Image == product.Image);
+
+       return addedProduct.FirstOrDefault();
     }
 
     public async Task UpdateAsync(Product product)

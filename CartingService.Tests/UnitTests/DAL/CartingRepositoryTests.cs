@@ -1,6 +1,5 @@
 ﻿using CartingService.DAL.Implementation;
 using CartingService.DAL.Interfaces;
-using CartingService.Domain;
 using System.Collections.Generic;
 using System.Linq;
 using LiteDB;
@@ -9,7 +8,7 @@ namespace CartingService.Tests.UnitTests.DAL;
 
 public class CartingRepositoryTests
 {
-    private IRepository<Cart> _sut;
+    private IRepository<Cart, string> _sut;
     private Mock<ILiteDBConnectionProvider> _connectionProviderMock;
     private Mock<ILiteDatabase> _liteDBMock;
     private Mock<ILiteCollection<Cart>> _liteCollectionMock;
@@ -30,7 +29,7 @@ public class CartingRepositoryTests
             .Returns(_liteCollectionMock.Object)
             .Verifiable();
 
-        _sut = new CartingRepository(_connectionProviderMock.Object);
+        _sut = new CartsRepository(_connectionProviderMock.Object);
     }
 
     [Fact]
@@ -55,7 +54,7 @@ public class CartingRepositoryTests
     [Fact]
     public void GetById_WhenCartExists_ShouldReturnCorrectCart()
     {
-        var cartId = 1;
+        var cartId = "1";
         var expectedCart = GetCarts().Last();
 
         _liteCollectionMock
@@ -75,7 +74,7 @@ public class CartingRepositoryTests
     [Fact]
     public void GetById_WhenCartDoesNotExist_ShouldReturnNull()
     {
-        var cartId = 10;
+        var cartId = "10";
 
         var result = _sut.GetById(cartId);
 
@@ -89,7 +88,7 @@ public class CartingRepositoryTests
     [Fact]
     public void Add_ShouldCallInsertAndCommitMethods()
     {
-        var newCartId = 1;
+        var newCartId = "1";
         var newCart = GetCarts().First();
 
         _sut.Add(newCartId, newCart);
@@ -103,7 +102,7 @@ public class CartingRepositoryTests
     [Fact]
     public void Remove_ShouldCallDeleteAndCommitMethods()
     {
-        var removingCartId = 1;
+        var removingCartId = "1";
 
         _sut.Remove(removingCartId);
 
@@ -116,7 +115,7 @@ public class CartingRepositoryTests
     [Fact]
     public void Update_ShouldCallUpdateAndCommitMethods()
     {
-        var updatingCartId = 1;
+        var updatingCartId = "1";
         var updatingCart = GetCarts().First();
 
         _sut.Update(updatingCartId, updatingCart);
@@ -133,7 +132,7 @@ public class CartingRepositoryTests
         {
             new Cart
             {
-                Id = 1,
+                Id = "1",
                 Items = new List<Item>
                 {
                     new Item { Id = 1, Name = "Item 1", Price = 123, Quantity = 23 },
@@ -143,7 +142,7 @@ public class CartingRepositoryTests
             },
             new Cart
             {
-                Id = 2,
+                Id = "2",
                 Items = new List<Item>
                 {
                     new Item { Id = 11, Name = "Item 11", Price = 63, Quantity = 11 },
@@ -153,7 +152,7 @@ public class CartingRepositoryTests
             },
             new Cart
             {
-                Id = 3,
+                Id = "3",
                 Items = new List<Item>
                 {
                     new Item { Id = 111, Name = "Item 111", Price = 11, Quantity = 3 },

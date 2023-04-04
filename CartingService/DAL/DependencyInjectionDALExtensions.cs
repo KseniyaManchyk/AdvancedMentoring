@@ -1,16 +1,16 @@
 ﻿using CartingService.DAL.Implementation;
 using CartingService.DAL.Interfaces;
-using CartingService.Domain;
+using CartingService.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CartingService.DAL
 {
     public static class DependencyInjectionDALExtensions
     {
-        public static IServiceCollection RegisterDALServices(this IServiceCollection services)
+        public static IServiceCollection AddDALServices(this IServiceCollection services, string connectionString)
         {
-            services.AddScoped<IRepository<Cart>, CartingRepository>();
-            services.AddScoped<ILiteDBConnectionProvider, LiteDBConnectionProvider>();
+            services.AddScoped<IRepository<Cart, string>, CartsRepository>();
+            services.AddScoped<ILiteDBConnectionProvider>(s => new LiteDBConnectionProvider(connectionString));
             return services;
         }
     }

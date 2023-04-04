@@ -37,10 +37,18 @@ public class CategoriesService : IService<Category>
         return await _categoryRepository.GetByIdAsync(id);
     }
 
-    public async Task AddAsync(Category category)
+    public async Task<Category> AddAsync(Category category)
     {
         _categoryValidator.ValidateAndThrow(category);
         await _categoryRepository.AddAsync(category);
+
+        var addedCategory = await _categoryRepository
+                           .GetByExpressionAsync(c =>
+                                                   c.Name == category.Name &&
+                                                   c.ParentCategoryId == category.ParentCategoryId &&
+                                                   c.Image == category.Image);
+
+        return addedCategory.FirstOrDefault();
     }
 
     public async Task UpdateAsync(Category category)
