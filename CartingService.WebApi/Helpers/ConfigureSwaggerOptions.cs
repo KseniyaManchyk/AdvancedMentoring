@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 
 namespace CartingService.WebApi.Helpers
 {
@@ -22,10 +23,13 @@ namespace CartingService.WebApi.Helpers
                     description.GroupName,
                     new OpenApiInfo()
                     {
-                        Title = "Carting Service API",
+                        Title = "CartingService.WebApi",
                         Version = description.ApiVersion.ToString()
                     });
             }
+
+            var xmlDocumentation = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlDocumentation));
         }
 
         public void Configure(string name, SwaggerGenOptions options)
