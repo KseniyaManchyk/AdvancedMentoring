@@ -8,7 +8,7 @@ public interface IService<TEntity> where TEntity : class
 
     Task<TEntity> GetByIdAsync(int id);
 
-    Task AddAsync(TEntity item);
+    Task<TEntity> AddAsync(TEntity item);
 
     Task UpdateAsync(TEntity item);
 

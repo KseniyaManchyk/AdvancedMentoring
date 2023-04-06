@@ -1,21 +1,22 @@
 using CatalogService.BLL.Services;
+using CatalogService.Domain.ExceptionHandling;
 using CatalogService.Domain.Interfaces;
 using CatalogService.Domain.Models;
 using FluentValidation;
 
 namespace CatalogService.BLL.Tests;
 
-public class ProductServiceTests
+public class ProductsServiceTests
 {
     private IService<Product> _sut;
     private Mock<IRepository<Product>> _repositoryMock;
     private Mock<AbstractValidator<Product>> _validatorMock;
 
-    public ProductServiceTests()
+    public ProductsServiceTests()
     {
         _repositoryMock = new Mock<IRepository<Product>>();
         _validatorMock = new Mock<AbstractValidator<Product>>();
-        _sut = new ProductService(_repositoryMock.Object, _validatorMock.Object);
+        _sut = new ProductsService(_repositoryMock.Object, _validatorMock.Object);
     }
 
     [Fact]
@@ -86,8 +87,18 @@ public class ProductServiceTests
     {
         var product = new Product();
 
+        _repositoryMock
+            .Setup(x => x.GetByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync(product);
+
         await _sut.DeleteAsync(product);
 
         _repositoryMock.Verify(x => x.DeleteAsync(product), Times.Once);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_WhenCategoryIsNotFound_ShouldThrowNotFoundException()
+    {
+        await Assert.ThrowsAsync<NotFoundException>(() => _sut.DeleteAsync(new Product()));
     }
 }

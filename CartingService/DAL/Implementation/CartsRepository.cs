@@ -1,13 +1,13 @@
 ﻿using CartingService.DAL.Interfaces;
-using CartingService.Domain;
+using CartingService.Domain.Models;
 
 namespace CartingService.DAL.Implementation;
 
-public class CartingRepository : IRepository<Cart>
+public class CartsRepository : IRepository<Cart, string>
 {
     private ILiteDBConnectionProvider _connectionProvider;
 
-    public CartingRepository(ILiteDBConnectionProvider connectionProvider)
+    public CartsRepository(ILiteDBConnectionProvider connectionProvider)
     {
         _connectionProvider = connectionProvider;
     }
@@ -21,7 +21,7 @@ public class CartingRepository : IRepository<Cart>
         }
     }
 
-    public Cart GetById(int id)
+    public Cart GetById(string id)
     {
         using (var liteDatabase = _connectionProvider.GetConnection())
         {
@@ -30,7 +30,7 @@ public class CartingRepository : IRepository<Cart>
         }
     }
 
-    public void Add(int id, Cart item)
+    public void Add(string id, Cart item)
     {
         using (var liteDatabase = _connectionProvider.GetConnection())
         {
@@ -40,7 +40,7 @@ public class CartingRepository : IRepository<Cart>
         }
     }
 
-    public void Remove(int id)
+    public void Remove(string id)
     {
         using (var liteDatabase = _connectionProvider.GetConnection())
         {
@@ -50,7 +50,7 @@ public class CartingRepository : IRepository<Cart>
         }
     }
 
-    public void Update(int id, Cart item)
+    public void Update(string id, Cart item)
     {
         using (var liteDatabase = _connectionProvider.GetConnection())
         {

@@ -3,6 +3,8 @@
     "path": "AdvancedMentoring.sln",
     "projects": [
       "CartingService.Tests\\CartingService.Tests.csproj",
+      "CartingService.WebApi.Tests\\CartingService.WebApi.Tests.csproj",
+      "CartingService.WebApi\\CartingService.WebApi.csproj",
       "CartingService\\CartingService.csproj"
     ]
   }

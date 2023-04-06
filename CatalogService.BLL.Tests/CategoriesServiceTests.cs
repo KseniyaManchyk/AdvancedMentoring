@@ -1,21 +1,24 @@
 using CatalogService.BLL.Services;
+using CatalogService.Domain.ExceptionHandling;
 using CatalogService.Domain.Interfaces;
 using CatalogService.Domain.Models;
 using FluentValidation;
 
 namespace CatalogService.BLL.Tests;
 
-public class CategoryServiceTests
+public class CategoriesServiceTests
 {
     private IService<Category> _sut;
     private Mock<IRepository<Category>> _repositoryMock;
+    private Mock<IService<Product>> _productServiceMock;
     private Mock<AbstractValidator<Category>> _validatorMock;
 
-    public CategoryServiceTests()
+    public CategoriesServiceTests()
     {
         _repositoryMock = new Mock<IRepository<Category>>();
+        _productServiceMock = new Mock<IService<Product>>();
         _validatorMock = new Mock<AbstractValidator<Category>>();
-        _sut = new CategoryService(_repositoryMock.Object, _validatorMock.Object);
+        _sut = new CategoriesService(_repositoryMock.Object, _productServiceMock.Object, _validatorMock.Object);
     }
 
     [Fact]
@@ -25,7 +28,7 @@ public class CategoryServiceTests
             .Setup(x => x.GetAllAsync())
             .ReturnsAsync(new List<Category> { new Category() });
 
-        var result = await _sut.GetAllAsync ();
+        var result = await _sut.GetAllAsync();
 
         _repositoryMock.Verify(x => x.GetAllAsync(), Times.Once);
         Assert.True(result.Count() != 0);
@@ -85,9 +88,22 @@ public class CategoryServiceTests
     public async Task DeleteAsync_ShouldCallDeleteRepositoryMethod()
     {
         var category = new Category();
+        category.Products.Add(new Product());
+        category.Products.Add(new Product());
+
+        _repositoryMock
+            .Setup(x => x.GetByIdAsync(It.IsAny<int>()))
+            .ReturnsAsync(category);
 
         await _sut.DeleteAsync(category);
 
         _repositoryMock.Verify(x => x.DeleteAsync(category), Times.Once);
+        _productServiceMock.Verify(x => x.DeleteAsync(It.IsAny<Product>()), Times.Exactly(2));
+    }
+
+    [Fact]
+    public async Task DeleteAsync_WhenCategoryIsNotFound_ShouldThrowNotFoundException()
+    {
+        await Assert.ThrowsAsync<NotFoundException>(() => _sut.DeleteAsync(new Category()));
     }
 }

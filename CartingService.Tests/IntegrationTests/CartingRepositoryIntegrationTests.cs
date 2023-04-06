@@ -1,6 +1,5 @@
 using CartingService.DAL.Implementation;
 using CartingService.DAL.Interfaces;
-using CartingService.Domain;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,11 +9,11 @@ namespace CartingService.Tests.IntegrationTests;
 
 public class CartingRepositoryIntegrationTests : IDisposable
 {
-    private IRepository<Cart> _sut;
+    private IRepository<Cart, string> _sut;
 
     public CartingRepositoryIntegrationTests()
     {
-        _sut = new CartingRepository(new LiteDBConnectionProvider(GetTestDBPath()));
+        _sut = new CartsRepository(new LiteDBConnectionProvider(GetTestDBPath()));
     }
 
     public void Dispose()
@@ -122,9 +121,9 @@ public class CartingRepositoryIntegrationTests : IDisposable
         return $@"{projectPath}/integration_tests.db";
     }
 
-    private int GenerateId()
+    private string GenerateId()
     {
         Random rnd = new Random();
-        return rnd.Next();
+        return $"{rnd.Next()}";
     }
 }

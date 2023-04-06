@@ -1,4 +1,4 @@
-﻿using CartingService.Domain;
+﻿using CartingService.Domain.Models;
 using FluentValidation;
 
 namespace CartingService.BLL.Validation;

@@ -6,7 +6,10 @@
       "CatalogService.BLL\\CatalogService.BLL.csproj",
       "CatalogService.DAL.Tests\\CatalogService.DAL.Tests.csproj",
       "CatalogService.DAL\\CatalogService.DAL.csproj",
-      "CatalogService.Domain\\CatalogService.Domain.csproj"
+      "CatalogService.DI\\CatalogService.DI.csproj",
+      "CatalogService.Domain\\CatalogService.Domain.csproj",
+      "CatalogService.WebApi.Tests\\CatalogService.WebApi.Tests.csproj",
+      "CatalogService.WebApi\\CatalogService.WebApi.csproj"
     ]
   }
 }
