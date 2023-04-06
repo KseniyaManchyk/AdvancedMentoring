@@ -26,6 +26,7 @@ namespace CartingService.WebApi.Controllers
         /// <param name="cartId">Unique identifier of cart.</param>
         /// <returns>Returns cart model.</returns>
         /// <response code="200">Returns found carts.</response>
+        /// <response code="400">API couldn't handle request due to thrown exceptions.</response>
         [HttpGet]
         [MapToApiVersion("1.0")]
         [Route("{cartId}")]
@@ -41,6 +42,7 @@ namespace CartingService.WebApi.Controllers
         /// </summary>
         /// <returns>Returns list of cart models.</returns>
         /// <response code="200">Returns found carts.</response>
+        /// <response code="400">API couldn't handle request due to thrown exceptions.</response>
         [HttpGet]
         [MapToApiVersion("2.0")]
         public ActionResult GetCarts()
@@ -71,6 +73,7 @@ namespace CartingService.WebApi.Controllers
         ///     }
         /// </remarks>
         /// <response code="200">Item was added sucessfully.</response>
+        /// <response code="400">API couldn't handle request due to thrown exceptions.</response>
         [HttpPost]
         [Route("{cartId}")]
         public ActionResult AddItemToCart([FromRoute] string cartId, [FromForm] Item item)
@@ -86,6 +89,8 @@ namespace CartingService.WebApi.Controllers
         /// <param name="cartId">Unique identifier of cart.</param>
         /// <param name="itemId">Unique identifier of item.</param>
         /// <response code="200">Item was deleted sucessfully.</response>
+        /// <response code="404">Cart or item does not exist in the system.</response>
+        /// <response code="400">API couldn't handle request due to thrown exceptions.</response>
         [HttpDelete]
         [Route("{cartId}/{itemId}")]
         public ActionResult DeleteItemFromCart([FromRoute] string cartId, [FromRoute] int itemId)
