@@ -9,8 +9,8 @@ namespace CartingService.DAL
     {
         public static IServiceCollection AddDALServices(this IServiceCollection services, string connectionString)
         {
-            services.AddSingleton<IRepository<Cart, string>, CartsRepository>();
-            services.AddSingleton<ILiteDBConnectionProvider>(s => new LiteDBConnectionProvider(connectionString));
+            services.AddScoped<IRepository<Cart, string>, CartsRepository>();
+            services.AddScoped<ILiteDBConnectionProvider>(s => new LiteDBConnectionProvider(connectionString));
             return services;
         }
     }
