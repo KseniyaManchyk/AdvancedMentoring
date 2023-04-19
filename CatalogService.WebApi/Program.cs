@@ -2,12 +2,8 @@ using CatalogService.DAL;
 using CatalogService.DI;
 using CatalogService.Domain.Interfaces;
 using CatalogService.WebApi.Extensions;
-using CatalogService.WebApi.Models;
 using CatalogService.WebApi.MQ;
-using Microsoft.AspNetCore.OData;
-using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ;
-using RabbitMQ.Implementation;
 using RabbitMQ.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +14,7 @@ builder.Services.AddControllersAndOData();
 
 builder.Services.AddDbContext(builder.Configuration.GetConnectionString("CatalogService"));
 builder.Services.AddMQConnectionProvider(builder.Configuration.GetConnectionString("MessageQueue"));
+builder.Services.AddScoped<IHelpUrlBuilder, HelpUrlBuilder>();
 builder.Services.AddScoped<IMessageProducer>(s => new MessageProducer(
     s.GetService<IRabbitMQConnectionProvider>(),
     builder.Configuration.GetValue<string>("MessageQueue:Name")

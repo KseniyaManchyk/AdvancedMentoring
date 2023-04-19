@@ -15,9 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options => options.Filters.Add(new ExceptionHandlingFilter()));
 builder.Services.AddServices(builder.Configuration.GetConnectionString("CartsService"));
 builder.Services.AddMQConnectionProvider(builder.Configuration.GetConnectionString("MessageQueue"));
-builder.Services.AddHostedService<MessageConsumer>();
-builder.Services.AddScoped<IMessageConsumer>(s => new MessageConsumer(
-    s, builder.Configuration.GetValue<string>("MessageQueue:Name")));
+builder.Services.AddSingleton<IMessageConsumer>(s => new MessageConsumer(
+    s.GetService<IRabbitMQConnectionProvider>(),
+    builder.Configuration.GetValue<string>("MessageQueue:Name"),
+    s.GetService<ICartsService>()));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddApiVersioning(opt =>
@@ -60,5 +61,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseRabbitMQ();
 
 app.Run();

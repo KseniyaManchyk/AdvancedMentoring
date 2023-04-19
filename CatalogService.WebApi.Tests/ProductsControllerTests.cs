@@ -1,17 +1,22 @@
+using RabbitMQ.Interfaces;
+using RabbitMQ.Models;
+
 namespace CatalogService.WebApi.Tests
 {
     public class ProductsControllerTests
     {
         private ProductsController _sut;
         private Mock<IService<Product>> _productsServiceMock;
+        private Mock<IMessageProducer> _messageProducerMock;
         private Mock<IHelpUrlBuilder> _helpUrlBuilder;
 
         public ProductsControllerTests()
         {
             _productsServiceMock = new Mock<IService<Product>>();
             _helpUrlBuilder = new Mock<IHelpUrlBuilder>();
+            _messageProducerMock = new Mock<IMessageProducer>();
 
-            _sut = new ProductsController(_productsServiceMock.Object, _helpUrlBuilder.Object);
+            _sut = new ProductsController(_productsServiceMock.Object, _messageProducerMock.Object, _helpUrlBuilder.Object);
         }
 
         [Fact]
@@ -46,6 +51,7 @@ namespace CatalogService.WebApi.Tests
             var result = await _sut.Put(product);
 
             _productsServiceMock.Verify(x => x.UpdateAsync(product), Times.Once);
+            _messageProducerMock.Verify(x => x.SendMessage(It.IsAny<Message>()), Times.Once);
             Assert.IsType<OkResult>(result);
         }
 

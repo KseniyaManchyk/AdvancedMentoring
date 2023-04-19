@@ -7,7 +7,6 @@ namespace CartingService.WebApi.Helpers
     {
         public static IServiceCollection AddServices(this IServiceCollection services, string connectionString)
         {
-
             services.AddDALServices(connectionString);
             services.AddBLLServices();
             return services;
