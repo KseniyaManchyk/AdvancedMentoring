@@ -6,7 +6,8 @@ using CatalogService.Domain.Models;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+using RabbitMQ.Implementation;
+using RabbitMQ.Interfaces;
 
 namespace CatalogService.DI;
 

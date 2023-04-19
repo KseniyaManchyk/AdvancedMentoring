@@ -10,11 +10,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CartingService\CartingService.csproj" />
+    <ProjectReference Include="..\RabbitMQ\RabbitMQ.csproj" />
   </ItemGroup>
 
 </Project>
