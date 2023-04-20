@@ -1,3 +1,5 @@
+using MessageQueue.Interfaces;
+
 namespace CatalogService.WebApi.Tests
 {
     public class ProductsControllerTests

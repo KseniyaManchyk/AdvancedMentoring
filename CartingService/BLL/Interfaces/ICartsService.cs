@@ -12,5 +12,7 @@ public interface ICartsService
 
     void AddItemToCart(string cartId, Item item);
 
+    void UpdateItems(Item item);
+
     void RemoveItemFromCart(string cartId, int itemId);
 }

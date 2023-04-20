@@ -1,10 +1,6 @@
-using CatalogService.DAL;
 using CatalogService.DI;
-using CatalogService.Domain.Interfaces;
 using CatalogService.WebApi.Extensions;
-using CatalogService.WebApi.Models;
-using Microsoft.AspNetCore.OData;
-using Microsoft.Extensions.DependencyInjection;
+using MessageQueue;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersAndOData();
 
 builder.Services.AddDbContext(builder.Configuration.GetConnectionString("CatalogService"));
+builder.Services.AddScoped<IHelpUrlBuilder, HelpUrlBuilder>();
+builder.Services.AddMQConnectionProvider(builder.Configuration.GetConnectionString("MessageQueue"));
+builder.Services.AddRabbitMQ(builder.Configuration.GetValue<string>("MessageQueue:Name"));
 builder.Services.AddServices();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -60,6 +60,18 @@ public class CartsService : ICartsService
         }
     }
 
+    public void UpdateItems(Item item)
+    {
+        var carts = _cartingRepository.GetAll();
+
+        _itemValidator.ValidateAndThrow(item);
+
+        foreach (var cart in carts)
+        {
+            UpdateItem(cart, item);
+        }
+    }
+
     public void RemoveItemFromCart(string cartId, int itemId)
     {
         var cart = _cartingRepository.GetById(cartId);
@@ -78,6 +90,21 @@ public class CartsService : ICartsService
 
         cart.Items.Remove(itemToRemove);
         _cartingRepository.Update(cartId, cart);
+    }
+
+    private void UpdateItem(Cart cart, Item item)
+    {
+        var itemToUpdate = cart.Items.FirstOrDefault(x => x.Id == item.Id);
+
+        if(itemToUpdate != null)
+        {
+            itemToUpdate.Name = item.Name;
+            itemToUpdate.Price = item.Price;
+            itemToUpdate.Quantity = item.Quantity;
+            itemToUpdate.Price = item.Price;
+
+            _cartingRepository.Update(cart.Id, cart);
+        }
     }
 
     private void AddItemToExistingCart(Cart cart, Item item)

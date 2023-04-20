@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using CartingService.WebApi.Filters;
+using CartingService.WebApi.MQ;
+using MessageQueue;
+using MessageQueue.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(options => options.Filters.Add(new ExceptionHandlingFilter()));
 builder.Services.AddServices(builder.Configuration.GetConnectionString("CartsService"));
+builder.Services.AddMQConnectionProvider(builder.Configuration.GetConnectionString("MessageQueue"));
+builder.Services.AddSingleton<IMessageConsumer>(serviceProvider => new MessageConsumer(
+    serviceProvider.GetService<IRabbitMQConnectionProvider>(),
+    serviceProvider,
+    builder.Configuration.GetValue<string>("MessageQueue:Name")));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddApiVersioning(opt =>
@@ -52,5 +60,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseRabbitMQ();
 
 app.Run();
