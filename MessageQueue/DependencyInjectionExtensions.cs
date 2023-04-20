@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using RabbitMQ.Implementation;
-using RabbitMQ.Interfaces;
+﻿using MessageQueue.Implementation;
+using MessageQueue.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace RabbitMQ;
+namespace MessageQueue;
 
 public static class DependencyInjectionExtensions
 {

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using CartingService.WebApi.Filters;
-using RabbitMQ.Interfaces;
-using RabbitMQ;
 using CartingService.WebApi.MQ;
+using MessageQueue;
+using MessageQueue.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

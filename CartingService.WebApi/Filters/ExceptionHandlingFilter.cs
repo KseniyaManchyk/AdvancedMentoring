@@ -8,9 +8,17 @@ namespace CartingService.WebApi.Filters
     {
         public void OnException(ExceptionContext context)
         {
-            context.Result = context.Exception is NotFoundException ?
-                new NotFoundObjectResult(context.Exception.Message) :
-                new BadRequestObjectResult($"Exception has been thrown during request processing. {context.Exception.Message}");
+            if (context.Exception is NotFoundException)
+            {
+                context.Result = new NotFoundObjectResult(context.Exception.Message);
+            }
+            else if (context.Exception is MessageQueueConectionException)
+            {
+                context.Result = new NotFoundObjectResult(context.Exception.Message);
+            } else
+            {
+                context.Result = new BadRequestObjectResult($"Exception has been thrown during request processing. {context.Exception.Message}");
+            }
         }
     }
 }

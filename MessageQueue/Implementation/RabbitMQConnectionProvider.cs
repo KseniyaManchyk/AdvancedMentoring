@@ -1,8 +1,7 @@
-﻿using RabbitMQ.Client;
-using RabbitMQ.Interfaces;
-using System.Threading.Channels;
+﻿using MessageQueue.Interfaces;
+using RabbitMQ.Client;
 
-namespace RabbitMQ.Implementation;
+namespace MessageQueue.Implementation;
 
 public class RabbitMQConnectionProvider : IRabbitMQConnectionProvider
 {

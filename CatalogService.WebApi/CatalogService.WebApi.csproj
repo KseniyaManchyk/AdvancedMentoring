@@ -8,13 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.1.1" />
-    <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CatalogService.DI\CatalogService.DI.csproj" />
     <ProjectReference Include="..\CatalogService.Domain\CatalogService.Domain.csproj" />
+    <ProjectReference Include="..\MessageQueue.Models\MessageQueue.Models.csproj" />
   </ItemGroup>
 
 </Project>

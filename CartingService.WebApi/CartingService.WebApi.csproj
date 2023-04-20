@@ -16,7 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CartingService\CartingService.csproj" />
-    <ProjectReference Include="..\RabbitMQ\RabbitMQ.csproj" />
+    <ProjectReference Include="..\MessageQueue.Models\MessageQueue.Models.csproj" />
+    <ProjectReference Include="..\MessageQueue\MessageQueue.csproj" />
   </ItemGroup>
 
 </Project>

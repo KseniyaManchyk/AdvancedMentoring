@@ -3,6 +3,8 @@ using CatalogService.Domain.ExceptionHandling;
 using CatalogService.Domain.Interfaces;
 using CatalogService.Domain.Models;
 using FluentValidation;
+using MessageQueue.Interfaces;
+using MessageQueue.Models;
 
 namespace CatalogService.BLL.Tests;
 
@@ -11,12 +13,14 @@ public class ProductsServiceTests
     private IService<Product> _sut;
     private Mock<IRepository<Product>> _repositoryMock;
     private Mock<AbstractValidator<Product>> _validatorMock;
+    private Mock<IMessageProducer> _messageProducerMock;
 
     public ProductsServiceTests()
     {
         _repositoryMock = new Mock<IRepository<Product>>();
         _validatorMock = new Mock<AbstractValidator<Product>>();
-        _sut = new ProductsService(_repositoryMock.Object, _validatorMock.Object);
+        _messageProducerMock = new Mock<IMessageProducer>();
+        _sut = new ProductsService(_repositoryMock.Object, _validatorMock.Object, _messageProducerMock.Object);
     }
 
     [Fact]
@@ -79,6 +83,7 @@ public class ProductsServiceTests
 
         await _sut.UpdateAsync(product);
 
+        _messageProducerMock.Verify(x => x.SendMessage(It.IsAny<Message>()), Times.Once);
         _repositoryMock.Verify(x => x.UpdateAsync(product), Times.Once);
     }
 

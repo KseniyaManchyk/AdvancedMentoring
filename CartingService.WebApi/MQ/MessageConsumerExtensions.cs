@@ -1,4 +1,4 @@
-﻿using RabbitMQ.Interfaces;
+﻿using MessageQueue.Interfaces;
 
 namespace CartingService.WebApi.MQ
 {

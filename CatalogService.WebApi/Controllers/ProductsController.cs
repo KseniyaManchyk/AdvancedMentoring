@@ -4,7 +4,6 @@ using CatalogService.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using CatalogService.WebApi.Extensions;
-using RabbitMQ.Interfaces;
 
 namespace CatalogService.WebApi.Controllers
 {
@@ -15,16 +14,13 @@ namespace CatalogService.WebApi.Controllers
         private const string categoriesPath = "categories";
 
         private readonly IService<Product> _productsService;
-        private readonly IMessageProducer _messageProducer;
         private readonly IHelpUrlBuilder _helpUrlBuilder;
 
         public ProductsController(
             IService<Product> productsService,
-            IMessageProducer messageProducer,
             IHelpUrlBuilder helpUrlBuilder)
         {
             _productsService = productsService;
-            _messageProducer = messageProducer;
             _helpUrlBuilder = helpUrlBuilder;
         }
 
@@ -53,17 +49,6 @@ namespace CatalogService.WebApi.Controllers
         public async Task<ActionResult> Put(Product product)
         {
             await _productsService.UpdateAsync(product).ConfigureAwait(false);
-
-            _messageProducer.SendMessage(new RabbitMQ.Models.Message
-            {
-                Id = Guid.NewGuid(),
-                UpdatedItem = new RabbitMQ.Models.Item
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Price = product.Price,
-                }
-            });
 
             return Ok();
         }

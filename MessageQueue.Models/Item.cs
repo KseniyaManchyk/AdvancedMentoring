@@ -1,4 +1,4 @@
-﻿namespace RabbitMQ.Models;
+﻿namespace MessageQueue.Models;
 
 public class Item
 {

@@ -2,21 +2,26 @@
 using CatalogService.Domain.Interfaces;
 using CatalogService.Domain.Models;
 using FluentValidation;
+using MessageQueue.Interfaces;
+using MessageQueue.Models;
 
 namespace CatalogService.BLL.Services;
 
 public class ProductsService : IService<Product>
 {
-    private IRepository<Product> _productRepository;
-    private AbstractValidator<Product> _productValidator;
+    private readonly IRepository<Product> _productRepository;
+    private readonly AbstractValidator<Product> _productValidator;
+    private readonly IMessageProducer _messageProducer;
 
     public ProductsService(
         IRepository<Product> productRepository,
-        AbstractValidator<Product> productValidator
+        AbstractValidator<Product> productValidator,
+        IMessageProducer messageProducer
         )
     {
         _productRepository = productRepository;
         _productValidator = productValidator;
+        _messageProducer = messageProducer;
     }
 
     public async Task<IEnumerable<Product>> GetAllAsync()
@@ -55,6 +60,17 @@ public class ProductsService : IService<Product>
     {
         _productValidator.ValidateAndThrow(product);
         await _productRepository.UpdateAsync(product);
+
+        _messageProducer.SendMessage(new Message
+        {
+            Id = Guid.NewGuid(),
+            UpdatedItem = new Item
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+            }
+        });
     }
 
     public async Task DeleteAsync(Product product)

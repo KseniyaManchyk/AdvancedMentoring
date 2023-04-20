@@ -1,4 +1,4 @@
-﻿namespace RabbitMQ.Interfaces;
+﻿namespace MessageQueue.Interfaces;
 
 public interface IMessageConsumer
 {

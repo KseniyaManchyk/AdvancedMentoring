@@ -1,9 +1,10 @@
 ﻿using CartingService.BLL.Interfaces;
+using CartingService.Domain.ExceptionHandling;
 using FluentValidation;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using RabbitMQ.Interfaces;
-using RabbitMQ.Models;
+using MessageQueue.Interfaces;
+using MessageQueue.Models;
 using System.Text;
 using System.Text.Json;
 
@@ -12,9 +13,10 @@ namespace CartingService.WebApi.MQ;
 public class MessageConsumer : IMessageConsumer, IDisposable
 {
     private const int numberOfRetries = 5;
+    private readonly string _messageQueueName;
+
     private readonly IRabbitMQConnectionProvider _connectionProvider;
     private readonly IServiceProvider _serviceProvider;
-    private readonly string _messageQueueName;
     private IModel _connectionModel;
 
     public MessageConsumer(
@@ -30,11 +32,7 @@ public class MessageConsumer : IMessageConsumer, IDisposable
 
     public void ProcessMessages()
     {
-        _connectionModel.QueueDeclare(queue: _messageQueueName,
-                            durable: false,
-                            exclusive: false,
-                            autoDelete: false,
-                            arguments: null);
+        TryToConnect();
 
         var consumer = new EventingBasicConsumer(_connectionModel);
 
@@ -46,6 +44,32 @@ public class MessageConsumer : IMessageConsumer, IDisposable
         };
 
         _connectionModel.BasicConsume(_messageQueueName, false, consumer);
+    }
+
+    private void TryToConnect()
+    {
+        var triesCount = 0;
+
+        while (triesCount < numberOfRetries)
+        {
+            try
+            {
+                _connectionModel.QueueDeclare(queue: _messageQueueName,
+                                    durable: false,
+                                    exclusive: false,
+                                    autoDelete: false,
+                                    arguments: null);
+                break;
+            }
+            catch (Exception ex)
+            {
+                triesCount++;
+                if (triesCount == numberOfRetries)
+                {
+                    throw new MessageQueueConectionException(_messageQueueName, ex);
+                }
+            }
+        }
     }
 
     private void ProcessMessage(BasicDeliverEventArgs deliveryEventArgs, Message message)

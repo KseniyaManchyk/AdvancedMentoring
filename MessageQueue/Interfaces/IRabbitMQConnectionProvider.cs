@@ -1,6 +1,6 @@
 ﻿using RabbitMQ.Client;
 
-namespace RabbitMQ.Interfaces;
+namespace MessageQueue.Interfaces;
 
 public interface IRabbitMQConnectionProvider: IDisposable
 {
