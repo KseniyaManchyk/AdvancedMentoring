@@ -6,8 +6,15 @@ using CartingService.WebApi.Filters;
 using CartingService.WebApi.MQ;
 using MessageQueue;
 using MessageQueue.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
+using CartingService.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
 // Add services to the container.
 
@@ -57,10 +64,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.UseRabbitMQ();
+
+app.UseMiddleware<TokenLoggingMiddleware>();
 
 app.Run();

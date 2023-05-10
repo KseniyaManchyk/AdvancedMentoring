@@ -1,5 +1,6 @@
 using CartingService.BLL.Interfaces;
 using CartingService.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CartingService.WebApi.Controllers
@@ -10,6 +11,7 @@ namespace CartingService.WebApi.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [ApiVersion("2.0")]
+    [Authorize]
     [Route("api/v{version:apiVersion}/carts")]
     public class CartsController : ControllerBase
     {

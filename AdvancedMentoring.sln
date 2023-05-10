@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingService.WebApi.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageQueue", "MessageQueue\MessageQueue.csproj", "{26BF573C-D05F-4687-8C39-FB11B2136B4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageQueue.Models", "MessageQueue.Models\MessageQueue.Models.csproj", "{CD4E870F-1977-4631-B01C-881D0686F53C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageQueue.Models", "MessageQueue.Models\MessageQueue.Models.csproj", "{CD4E870F-1977-4631-B01C-881D0686F53C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
