@@ -1,4 +1,5 @@
 using MessageQueue.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace CatalogService.WebApi.Tests
 {
@@ -7,13 +8,14 @@ namespace CatalogService.WebApi.Tests
         private ProductsController _sut;
         private Mock<IService<Product>> _productsServiceMock;
         private Mock<IHelpUrlBuilder> _helpUrlBuilder;
+        private Mock<ILogger<ProductsController>> _loggerMock;
 
         public ProductsControllerTests()
         {
             _productsServiceMock = new Mock<IService<Product>>();
             _helpUrlBuilder = new Mock<IHelpUrlBuilder>();
 
-            _sut = new ProductsController(_productsServiceMock.Object, _helpUrlBuilder.Object);
+            _sut = new ProductsController(_productsServiceMock.Object, _helpUrlBuilder.Object, _loggerMock.Object);
         }
 
         [Fact]

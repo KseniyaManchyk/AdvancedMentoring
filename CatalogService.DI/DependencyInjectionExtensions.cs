@@ -4,10 +4,12 @@ using CatalogService.BLL.Validation;
 using CatalogService.DAL;
 using CatalogService.Domain.Interfaces;
 using CatalogService.Domain.Models;
+using CorrelationId.Abstractions;
 using FluentValidation;
 using MessageQueue.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace CatalogService.DI;
 
@@ -35,7 +37,11 @@ public static class DependencyInjectionExtensions
 
     public static IServiceCollection AddRabbitMQ(this IServiceCollection services, string messageQueueName)
     {
-        services.AddScoped<IMessageProducer>(s => new MessageProducer(s.GetService<IRabbitMQConnectionProvider>(), messageQueueName));
+        services.AddScoped<IMessageProducer>(s => new MessageProducer(
+            s.GetService<IRabbitMQConnectionProvider>(),
+            s.GetService<ILogger<MessageProducer>>(),
+            s.GetService<ICorrelationContextAccessor>(),
+            messageQueueName));
         return services;
     }
 }

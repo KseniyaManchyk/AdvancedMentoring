@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace CatalogService.WebApi.Tests
 {
     public class CategoriesControllerTests
@@ -5,13 +7,14 @@ namespace CatalogService.WebApi.Tests
         private CategoriesController _sut;
         private Mock<IService<Category>> _categoriesServiceMock;
         private Mock<IHelpUrlBuilder> _helpUrlBuilder;
+        private Mock<ILogger<CategoriesController>> _loggerMock;
 
         public CategoriesControllerTests()
         {
             _categoriesServiceMock = new Mock<IService<Category>>();
             _helpUrlBuilder = new Mock<IHelpUrlBuilder>();
 
-            _sut = new CategoriesController(_categoriesServiceMock.Object, _helpUrlBuilder.Object);
+            _sut = new CategoriesController(_categoriesServiceMock.Object, _helpUrlBuilder.Object, _loggerMock.Object);
         }
 
         [Fact]

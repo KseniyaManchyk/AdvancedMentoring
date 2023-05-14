@@ -14,10 +14,12 @@ namespace CartingService.WebApi.Controllers
     public class CartsController : ControllerBase
     {
         private readonly ICartsService _cartsService;
+        private readonly ILogger<CartsController> _logger;
 
-        public CartsController(ICartsService cartingService)
+        public CartsController(ICartsService cartingService, ILogger<CartsController> logger)
         {
             _cartsService = cartingService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -32,6 +34,8 @@ namespace CartingService.WebApi.Controllers
         [Route("{cartId}")]
         public ActionResult GetCart([FromRoute] string cartId)
         {
+            _logger.LogInformation($"Start getting cart with id {cartId}.");
+
             var cart = _cartsService.GetCartById(cartId);
 
             return Ok(cart);
@@ -47,6 +51,8 @@ namespace CartingService.WebApi.Controllers
         [MapToApiVersion("2.0")]
         public ActionResult GetCarts()
         {
+            _logger.LogInformation("Start getting all carts.");
+
             var carts = _cartsService.GetCarts();
 
             return Ok(carts);
@@ -78,7 +84,11 @@ namespace CartingService.WebApi.Controllers
         [Route("{cartId}")]
         public ActionResult AddItemToCart([FromRoute] string cartId, [FromForm] Item item)
         {
+            _logger.LogInformation($"Start adding new cart with id {cartId}.");
+
             _cartsService.AddItemToCart(cartId, item);
+
+            _logger.LogInformation($"Cart with id {cartId} was added.");
 
             return Ok();
         }
@@ -95,7 +105,11 @@ namespace CartingService.WebApi.Controllers
         [Route("{cartId}/{itemId}")]
         public ActionResult DeleteItemFromCart([FromRoute] string cartId, [FromRoute] int itemId)
         {
+            _logger.LogInformation($"Start deleting item with id {itemId} from cart with id {cartId}.");
+
             _cartsService.RemoveItemFromCart(cartId, itemId);
+
+            _logger.LogInformation($"Item with id {itemId} from cart with id {cartId} was deleted.");
 
             return Ok();
         }
