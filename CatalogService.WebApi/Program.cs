@@ -4,7 +4,8 @@ using CatalogService.WebApi.Middlewares;
 using CorrelationId;
 using CorrelationId.DependencyInjection;
 using MessageQueue;
-
+using Microsoft.ApplicationInsights.Extensibility;
+using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -30,7 +31,7 @@ builder.Services.AddDefaultCorrelationId(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+builder.Host.UseSerilog((ctx, services, lc) => lc.WriteTo.Console().WriteTo.ApplicationInsights(services.GetRequiredService<TelemetryConfiguration>(), TelemetryConverter.Traces));
 
 var app = builder.Build();
 
@@ -42,6 +43,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseSerilogRequestLogging();
 
 app.UseAuthorization();
 

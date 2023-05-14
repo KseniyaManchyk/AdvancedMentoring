@@ -9,6 +9,8 @@ using CorrelationId;
 using CartingService.WebApi.Middlewares;
 using CorrelationId.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Microsoft.ApplicationInsights.Extensibility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +54,7 @@ builder.Services.AddVersionedApiExplorer(setup =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
+builder.Host.UseSerilog((ctx, services, lc) => lc.WriteTo.Console().WriteTo.ApplicationInsights(services.GetRequiredService<TelemetryConfiguration>(), TelemetryConverter.Traces));
 
 var app = builder.Build();
 
@@ -71,6 +74,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseSerilogRequestLogging();
 
 app.UseAuthorization();
 
