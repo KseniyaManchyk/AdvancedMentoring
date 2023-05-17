@@ -3,14 +3,16 @@ using CatalogService.Domain.Models;
 using CatalogService.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using CatalogService.WebApi.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CatalogService.WebApi.Controllers
 {
     [ApiController]
     [Route("categories")]
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
-        private const string productsPath = "products";
+        private const string? productsPath = "products";
 
         private readonly IService<Category> _categoriesService;
         private readonly IHelpUrlBuilder _helpUrlBuilder;
@@ -41,6 +43,7 @@ namespace CatalogService.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult> Post(Category category)
         {
             _logger.LogInformation($"Start adding new category with name {category.Name}.");
@@ -57,6 +60,7 @@ namespace CatalogService.WebApi.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult> Put(Category category)
         {
             _logger.LogInformation($"Start updating category with name {category.Name}.");
@@ -69,6 +73,7 @@ namespace CatalogService.WebApi.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult> Delete(Category category)
         {
             _logger.LogInformation($"Start deleting category with name {category.Name}.");

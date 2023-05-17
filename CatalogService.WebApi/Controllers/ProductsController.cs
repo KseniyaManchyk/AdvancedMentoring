@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using CatalogService.WebApi.Extensions;
 using CatalogService.BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CatalogService.WebApi.Controllers
 {
     [ApiController]
     [Route("products")]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private const string categoriesPath = "categories";
@@ -40,6 +42,7 @@ namespace CatalogService.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult> Post(Product product)
         {
             _logger.LogInformation($"Start adding new product with name {product.Name}.");
@@ -56,6 +59,7 @@ namespace CatalogService.WebApi.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult> Put(Product product)
         {
             _logger.LogInformation($"Start updating product with name {product.Name}.");
@@ -68,6 +72,7 @@ namespace CatalogService.WebApi.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Manager")]
         public async Task<ActionResult> Delete(Product product)
         {
             _logger.LogInformation($"Start deleting product with name {product.Name}.");
