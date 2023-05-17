@@ -2,5 +2,6 @@
 
 public class ICorrelated
 {
-    public Guid CorrelationId { get; set; }
+    public string SpanId { get; set; }
+    public string TraceId { get; set; }
 }

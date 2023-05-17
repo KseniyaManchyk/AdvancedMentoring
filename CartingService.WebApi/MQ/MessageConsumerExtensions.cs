@@ -1,6 +1,4 @@
-﻿using CorrelationId;
-using CorrelationId.Abstractions;
-using MessageQueue.Interfaces;
+﻿using MessageQueue.Interfaces;
 
 namespace CartingService.WebApi.MQ
 {

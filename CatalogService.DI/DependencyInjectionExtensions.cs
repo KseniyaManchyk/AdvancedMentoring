@@ -4,7 +4,6 @@ using CatalogService.BLL.Validation;
 using CatalogService.DAL;
 using CatalogService.Domain.Interfaces;
 using CatalogService.Domain.Models;
-using CorrelationId.Abstractions;
 using FluentValidation;
 using MessageQueue.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +39,6 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IMessageProducer>(s => new MessageProducer(
             s.GetService<IRabbitMQConnectionProvider>(),
             s.GetService<ILogger<MessageProducer>>(),
-            s.GetService<ICorrelationContextAccessor>(),
             messageQueueName));
         return services;
     }

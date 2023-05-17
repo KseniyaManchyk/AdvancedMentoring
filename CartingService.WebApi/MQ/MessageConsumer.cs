@@ -7,6 +7,7 @@ using MessageQueue.Interfaces;
 using MessageQueue.Models;
 using System.Text;
 using System.Text.Json;
+using System.Diagnostics;
 
 namespace CartingService.WebApi.MQ;
 
@@ -44,13 +45,15 @@ public class MessageConsumer : IMessageConsumer, IDisposable
             var content = Encoding.UTF8.GetString(deliveryEventArgs.Body.ToArray());
             var message = JsonSerializer.Deserialize<Message>(content);
 
-            using (_logger.BeginScope(new Dictionary<string, Guid> { ["CorrelationId"] = message.CorrelationId }))
-            {
-                ProcessMessage(deliveryEventArgs, message);
-            }
+            ProcessMessage(deliveryEventArgs, message);
         };
 
         _connectionModel.BasicConsume(_messageQueueName, false, consumer);
+    }
+
+    public void Dispose()
+    {
+        _connectionProvider.Dispose();
     }
 
     private void TryToConnect()
@@ -84,6 +87,8 @@ public class MessageConsumer : IMessageConsumer, IDisposable
 
     private void ProcessMessage(BasicDeliverEventArgs deliveryEventArgs, Message message)
     {
+        InitializeActivity(message);
+
         _logger.LogInformation($"Message consumer get a new message. Trying to process it.");
 
         var triesCount = 0;
@@ -125,8 +130,12 @@ public class MessageConsumer : IMessageConsumer, IDisposable
         }
     }
 
-    public void Dispose()
+    private void InitializeActivity(Message message)
     {
-        _connectionProvider.Dispose();
+        var activity = new Activity("Processing");
+        var traceId = ActivityTraceId.CreateFromString(message.TraceId);
+        var spanId = ActivitySpanId.CreateFromString(message.SpanId);
+        activity.SetParentId(traceId, spanId);
+        activity.Start();
     }
 }
