@@ -7,6 +7,7 @@ using MessageQueue.Interfaces;
 using MessageQueue.Models;
 using System.Text;
 using System.Text.Json;
+using System.Diagnostics;
 
 namespace CartingService.WebApi.MQ;
 
@@ -17,17 +18,20 @@ public class MessageConsumer : IMessageConsumer, IDisposable
 
     private readonly IRabbitMQConnectionProvider _connectionProvider;
     private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<MessageConsumer> _logger;
     private IModel _connectionModel;
 
     public MessageConsumer(
         IRabbitMQConnectionProvider connectionProvider,
         IServiceProvider serviceProvider,
+        ILogger<MessageConsumer> logger,
         string messageQueueName)
     {
         _connectionProvider = connectionProvider;
         _messageQueueName = messageQueueName;
         _connectionModel = _connectionProvider.GetConnectionModel();
         _serviceProvider = serviceProvider;
+        _logger = logger;
     }
 
     public void ProcessMessages()
@@ -39,16 +43,24 @@ public class MessageConsumer : IMessageConsumer, IDisposable
         consumer.Received += (model, deliveryEventArgs) =>
         {
             var content = Encoding.UTF8.GetString(deliveryEventArgs.Body.ToArray());
+            var message = JsonSerializer.Deserialize<Message>(content);
 
-            ProcessMessage(deliveryEventArgs, JsonSerializer.Deserialize<Message>(content));
+            ProcessMessage(deliveryEventArgs, message);
         };
 
         _connectionModel.BasicConsume(_messageQueueName, false, consumer);
     }
 
+    public void Dispose()
+    {
+        _connectionProvider.Dispose();
+    }
+
     private void TryToConnect()
     {
         var triesCount = 0;
+
+        _logger.LogInformation($"Message consumer is trying to connect message queue with name {_messageQueueName}.");
 
         while (triesCount < numberOfRetries)
         {
@@ -66,6 +78,7 @@ public class MessageConsumer : IMessageConsumer, IDisposable
                 triesCount++;
                 if (triesCount == numberOfRetries)
                 {
+                    _logger.LogError("Message consumer could not connect message queue.");
                     throw new MessageQueueConectionException(_messageQueueName, ex);
                 }
             }
@@ -74,6 +87,10 @@ public class MessageConsumer : IMessageConsumer, IDisposable
 
     private void ProcessMessage(BasicDeliverEventArgs deliveryEventArgs, Message message)
     {
+        InitializeActivity(message);
+
+        _logger.LogInformation($"Message consumer get a new message. Trying to process it.");
+
         var triesCount = 0;
 
         while (triesCount < numberOfRetries)
@@ -97,6 +114,7 @@ public class MessageConsumer : IMessageConsumer, IDisposable
             }
             catch (ValidationException)
             {
+                _logger.LogError($"Validation for new item failed.");
                 _connectionModel.BasicNack(deliveryEventArgs.DeliveryTag, false, false);
                 break;
             }
@@ -105,14 +123,19 @@ public class MessageConsumer : IMessageConsumer, IDisposable
                 triesCount++;
                 if (triesCount == numberOfRetries)
                 {
+                    _logger.LogError($"Unknown error occured during updating item.");
                     _connectionModel.BasicNack(deliveryEventArgs.DeliveryTag, false, false);
                 }
             }
         }
     }
 
-    public void Dispose()
+    private void InitializeActivity(Message message)
     {
-        _connectionProvider.Dispose();
+        var activity = new Activity("Processing");
+        var traceId = ActivityTraceId.CreateFromString(message.TraceId);
+        var spanId = ActivitySpanId.CreateFromString(message.SpanId);
+        activity.SetParentId(traceId, spanId);
+        activity.Start();
     }
 }

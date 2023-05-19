@@ -6,9 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>bin\CartingService.WebApi.xml</DocumentationFile>
+    <ApplicationInsightsResourceId>/subscriptions/655dbf4e-318f-49b2-bf57-01830375ce07/resourceGroups/advanced-mentoring/providers/microsoft.insights/components/advancedmentoring</ApplicationInsightsResourceId>
+    <UserSecretsId>b95d1dd8-86d8-454a-8956-edefdc32b9a5</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />

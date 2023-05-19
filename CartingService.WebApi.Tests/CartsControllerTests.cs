@@ -1,4 +1,5 @@
 using CartingService.Domain.Models;
+using Microsoft.Extensions.Logging;
 
 namespace CartingService.WebApi.Tests
 {
@@ -6,12 +7,13 @@ namespace CartingService.WebApi.Tests
     {
         private CartsController _sut;
         private Mock<ICartsService> _cartsServiceMock;
+        private Mock<ILogger<CartsController>> _loggerMock;
 
         public CartsControllerTests()
         {
             _cartsServiceMock = new Mock<ICartsService>();
 
-            _sut = new CartsController(_cartsServiceMock.Object);
+            _sut = new CartsController(_cartsServiceMock.Object, _loggerMock.Object);
         }
 
         [Fact]

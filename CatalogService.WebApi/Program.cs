@@ -1,5 +1,6 @@
 using CatalogService.DI;
 using CatalogService.WebApi.Extensions;
+using CatalogService.WebApi.Middlewares;
 using MessageQueue;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -20,6 +21,7 @@ builder.Services.AddScoped<IHelpUrlBuilder, HelpUrlBuilder>();
 builder.Services.AddMQConnectionProvider(builder.Configuration.GetConnectionString("MessageQueue"));
 builder.Services.AddRabbitMQ(builder.Configuration.GetValue<string>("MessageQueue:Name"));
 builder.Services.AddServices();
+builder.Services.AddApplicationInsightsTelemetry();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -60,11 +62,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 
 app.Run();

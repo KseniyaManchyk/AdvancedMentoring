@@ -3,6 +3,9 @@ using MessageQueue.Interfaces;
 using System.Text;
 using System.Text.Json;
 using CatalogService.Domain.ExceptionHandling;
+using Microsoft.Extensions.Logging;
+using MessageQueue.Models;
+using System.Diagnostics;
 
 namespace CatalogService.BLL.MQ;
 
@@ -13,32 +16,51 @@ public class MessageProducer: IMessageProducer, IDisposable
 
     private readonly IRabbitMQConnectionProvider _connectionProvider;
     private readonly IModel _connectionModel;
+    private readonly ILogger<MessageProducer> _logger;
 
-    public MessageProducer(IRabbitMQConnectionProvider connectionProvider, string messageQueueName)
+    public MessageProducer(
+        IRabbitMQConnectionProvider connectionProvider,
+        ILogger<MessageProducer> logger,
+        string messageQueueName)
     {
         _connectionProvider = connectionProvider;
         _messageQueueName = messageQueueName;
+        _logger = logger;
 
         _connectionModel = _connectionProvider.GetConnectionModel();
     }
 
-    public void SendMessage<T>(T message)
+    public void SendMessage<T>(T message) where T: ICorrelated
     {
         TryToConnect();
+
+        message.SpanId = Activity.Current.SpanId.ToString();
+        message.TraceId = Activity.Current.TraceId.ToString();
 
         var serializedMessage = JsonSerializer.Serialize(message);
 
         var body = Encoding.UTF8.GetBytes(serializedMessage);
 
+        _logger.LogInformation($"Message producer is sending a new message.");
+
         _connectionModel.BasicPublish(exchange: "",
                        routingKey: _messageQueueName,
                        basicProperties: null,
                        body: body);
+
+        Activity.Current.Stop();
+    }
+
+    public void Dispose()
+    {
+        _connectionProvider.Dispose();
     }
 
     private void TryToConnect()
     {
         var triesCount = 0;
+
+        _logger.LogInformation($"Message producer is trying to connect message queue with name {_messageQueueName}.");
 
         while (triesCount < numberOfRetries)
         {
@@ -56,14 +78,10 @@ public class MessageProducer: IMessageProducer, IDisposable
                 triesCount++;
                 if (triesCount == numberOfRetries)
                 {
+                    _logger.LogError("Message producer could not connect message queue.");
                     throw new MessageQueueConectionException(_messageQueueName, ex);
                 }
             }
         }
-    }
-
-    public void Dispose()
-    {
-        _connectionProvider.Dispose();
     }
 }

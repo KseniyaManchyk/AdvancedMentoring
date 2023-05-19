@@ -4,6 +4,7 @@ using CatalogService.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using CatalogService.WebApi.Extensions;
+using CatalogService.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace CatalogService.WebApi.Controllers
@@ -17,19 +18,24 @@ namespace CatalogService.WebApi.Controllers
 
         private readonly IService<Product> _productsService;
         private readonly IHelpUrlBuilder _helpUrlBuilder;
+        private readonly ILogger<ProductsController> _logger;
 
         public ProductsController(
             IService<Product> productsService,
-            IHelpUrlBuilder helpUrlBuilder)
+            IHelpUrlBuilder helpUrlBuilder,
+            ILogger<ProductsController> logger)
         {
             _productsService = productsService;
             _helpUrlBuilder = helpUrlBuilder;
+            _logger = logger;
         }
 
         [HttpGet]
         [EnableQuery]
         public async Task<ActionResult<IEnumerable<Product>>> Get()
         {
+            _logger.LogInformation("Start getting all products.");
+
             var products = await _productsService.GetAllAsync().ConfigureAwait(false);
 
             return Ok(products);
@@ -39,7 +45,11 @@ namespace CatalogService.WebApi.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<ActionResult> Post(Product product)
         {
+            _logger.LogInformation($"Start adding new product with name {product.Name}.");
+
             var addedProduct = await _productsService.AddAsync(product).ConfigureAwait(false);
+
+            _logger.LogInformation($"Product with name {product.Name} was added.");
 
             return Created(_helpUrlBuilder.BuildUrl(Request), new ResponseModel<Product>
             {
@@ -52,7 +62,11 @@ namespace CatalogService.WebApi.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<ActionResult> Put(Product product)
         {
+            _logger.LogInformation($"Start updating product with name {product.Name}.");
+
             await _productsService.UpdateAsync(product).ConfigureAwait(false);
+
+            _logger.LogInformation($"Product with id {product.Id} was updated.");
 
             return Ok();
         }
@@ -61,7 +75,11 @@ namespace CatalogService.WebApi.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<ActionResult> Delete(Product product)
         {
+            _logger.LogInformation($"Start deleting product with name {product.Name}.");
+
             await _productsService.DeleteAsync(product).ConfigureAwait(false);
+
+            _logger.LogInformation($"Product with name {product.Name} was deleted.");
 
             return NoContent();
         }

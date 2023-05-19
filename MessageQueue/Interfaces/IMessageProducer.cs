@@ -1,6 +1,8 @@
-﻿namespace MessageQueue.Interfaces;
+﻿using MessageQueue.Models;
+
+namespace MessageQueue.Interfaces;
 
 public interface IMessageProducer
 {
-    void SendMessage<T>(T message);
+    void SendMessage<T>(T message) where T: ICorrelated;
 }
