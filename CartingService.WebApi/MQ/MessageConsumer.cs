@@ -5,9 +5,9 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using MessageQueue.Interfaces;
 using MessageQueue.Models;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
-using System.Diagnostics;
 
 namespace CartingService.WebApi.MQ;
 
