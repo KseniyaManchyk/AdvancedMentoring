@@ -1,16 +1,14 @@
 using CartingService.WebApi.Helpers;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using CartingService.WebApi.Middlewares;
 using CartingService.WebApi.MQ;
 using MessageQueue;
 using MessageQueue.Interfaces;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Identity.Web;
-using CartingService.WebApi.Middlewares;
 using Microsoft.OpenApi.Models;
-using Microsoft.ApplicationInsights.Extensibility;
 
 var builder = WebApplication.CreateBuilder(args);
 

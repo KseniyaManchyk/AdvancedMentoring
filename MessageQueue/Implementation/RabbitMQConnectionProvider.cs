@@ -14,7 +14,7 @@ public class RabbitMQConnectionProvider : IRabbitMQConnectionProvider
     {
         _connectionFactory = new ConnectionFactory
         {
-            Uri = new Uri(connectionString)
+            Uri = new Uri(connectionString),
         };
     }
 
