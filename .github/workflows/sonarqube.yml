@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches:
-      - ${{ github.head_ref || github.ref_name }} 
+      - master
 
 
 jobs:
