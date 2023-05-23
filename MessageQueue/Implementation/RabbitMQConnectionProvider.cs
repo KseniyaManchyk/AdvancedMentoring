@@ -5,7 +5,8 @@ namespace MessageQueue.Implementation;
 
 public class RabbitMQConnectionProvider : IRabbitMQConnectionProvider
 {
-    private ConnectionFactory _connectionFactory;
+    private readonly ConnectionFactory _connectionFactory;
+
     private IConnection _connection;
     private IModel _model;
 

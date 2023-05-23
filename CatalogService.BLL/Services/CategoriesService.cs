@@ -7,9 +7,9 @@ namespace CatalogService.BLL.Services;
 
 public class CategoriesService : IService<Category>
 {
-    private IRepository<Category> _categoryRepository;
-    private IService<Product> _productsService;
-    private AbstractValidator<Category> _categoryValidator;
+    private readonly IRepository<Category> _categoryRepository;
+    private readonly IService<Product> _productsService;
+    private readonly AbstractValidator<Category> _categoryValidator;
 
     public CategoriesService(
         IRepository<Category> categoryRepository,

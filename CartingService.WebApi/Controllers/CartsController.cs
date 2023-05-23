@@ -18,6 +18,10 @@ namespace CartingService.WebApi.Controllers
         private readonly ICartsService _cartsService;
         private readonly ILogger<CartsController> _logger;
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CartsController"/> class.
+        /// </summary>
         public CartsController(ICartsService cartingService, ILogger<CartsController> logger)
         {
             _cartsService = cartingService;

@@ -2,7 +2,7 @@
 
 public class ResponseModel<T>
 {
-    public string NextLink { get; set; }
+    public string? NextLink { get; set; }
 
-    public IEnumerable<T> Items { get; set; }
+    public IEnumerable<T> Items { get; set; } = new List<T>();
 }

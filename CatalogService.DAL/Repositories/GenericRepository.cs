@@ -4,8 +4,8 @@ namespace CatalogService.Domain.Interfaces;
 
 public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
 {
-    DbContext _context;
-    DbSet<TEntity> _dbSet;
+    private readonly DbContext _context;
+    private readonly DbSet<TEntity> _dbSet;
 
     public GenericRepository(DbContext context)
     {

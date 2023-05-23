@@ -13,6 +13,7 @@ namespace CatalogService.WebApi.Tests
         {
             _categoriesServiceMock = new Mock<IService<Category>>();
             _helpUrlBuilder = new Mock<IHelpUrlBuilder>();
+            _loggerMock = new Mock<ILogger<CategoriesController>>();
 
             _sut = new CategoriesController(_categoriesServiceMock.Object, _helpUrlBuilder.Object, _loggerMock.Object);
         }
