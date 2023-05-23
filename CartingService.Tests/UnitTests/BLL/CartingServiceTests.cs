@@ -18,7 +18,7 @@ public class CartingServiceTests
         _repositoryMock = new Mock<IRepository<Cart, string>>();
         _itemValidatorMock = new Mock<AbstractValidator<Item>>();
 
-        _sut = new CartingService.BLL.Implementation.CartsService(_repositoryMock.Object, null, _itemValidatorMock.Object);
+        _sut = new CartingService.BLL.Implementation.CartsService(_repositoryMock.Object, _itemValidatorMock.Object);
     }
 
     [Fact]
@@ -116,7 +116,7 @@ public class CartingServiceTests
             .Setup(x => x.GetById(cartId))
             .Returns(cart);
 
-        _sut = new CartingService.BLL.Implementation.CartsService(_repositoryMock.Object, null, new ItemValidator());
+        _sut = new CartingService.BLL.Implementation.CartsService(_repositoryMock.Object, new ItemValidator());
 
         Assert.Throws<ValidationException>(() => _sut.AddItemToCart(cartId, newItem));
     }
