@@ -8,7 +8,10 @@
   "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
   "settings": {
     "documentationRules": {
-      "documentPrivateElements": true
+      "documentPrivateElements": false,
+      "xmlHeader": false,
+      "copyrightText": "",
+      "documentInterfaces": false
     },
     "orderingRules": {
       "systemUsingDirectivesFirst": true,
