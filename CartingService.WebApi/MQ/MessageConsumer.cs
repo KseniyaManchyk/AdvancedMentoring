@@ -1,8 +1,8 @@
 ﻿using CartingService.BLL.Interfaces;
 using CartingService.Domain.ExceptionHandling;
 using FluentValidation;
-using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMQ.Client;
 using MessageQueue.Interfaces;
 using MessageQueue.Models;
 using System.Text;
