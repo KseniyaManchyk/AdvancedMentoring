@@ -1,6 +1,6 @@
 using CartingService.BLL.Interfaces;
-using CartingService.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
+using CartingService.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CartingService.WebApi.Controllers

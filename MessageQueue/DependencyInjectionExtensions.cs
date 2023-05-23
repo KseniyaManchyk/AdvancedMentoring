@@ -2,13 +2,14 @@
 using MessageQueue.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MessageQueue;
-
-public static class DependencyInjectionExtensions
+namespace MessageQueue
 {
-    public static IServiceCollection AddMQConnectionProvider(this IServiceCollection services, string connectionString)
+    public static class DependencyInjectionExtensions
     {
-        services.AddSingleton<IRabbitMQConnectionProvider>(s => new RabbitMQConnectionProvider(connectionString));
-        return services;
+        public static IServiceCollection AddMQConnectionProvider(this IServiceCollection services, string connectionString)
+        {
+            services.AddSingleton<IRabbitMQConnectionProvider>(s => new RabbitMQConnectionProvider(connectionString));
+            return services;
+        }
     }
 }

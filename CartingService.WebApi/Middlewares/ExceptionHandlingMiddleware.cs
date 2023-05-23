@@ -1,5 +1,5 @@
-﻿using CartingService.Domain.ExceptionHandling;
-using System.Net;
+﻿using System.Net;
+using CartingService.Domain.ExceptionHandling;
 
 namespace CartingService.WebApi.Middlewares;
 
