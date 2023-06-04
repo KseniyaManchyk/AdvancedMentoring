@@ -5,7 +5,7 @@ namespace CartingService.DAL.Implementation;
 
 public class CartsRepository : IRepository<Cart, string>
 {
-    private ILiteDBConnectionProvider _connectionProvider;
+    private readonly ILiteDBConnectionProvider _connectionProvider;
 
     public CartsRepository(ILiteDBConnectionProvider connectionProvider)
     {

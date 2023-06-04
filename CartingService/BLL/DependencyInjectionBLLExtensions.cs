@@ -11,7 +11,6 @@ namespace CartingService.BLL
         public static IServiceCollection AddBLLServices(this IServiceCollection services)
         {
             services.AddScoped<ICartsService, Implementation.CartsService>();
-            services.AddScoped<AbstractValidator<Cart>, CartValidator>();
             services.AddScoped<AbstractValidator<Item>, ItemValidator>();
             return services;
         }

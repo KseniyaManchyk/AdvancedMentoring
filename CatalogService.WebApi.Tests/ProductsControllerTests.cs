@@ -14,6 +14,7 @@ namespace CatalogService.WebApi.Tests
         {
             _productsServiceMock = new Mock<IService<Product>>();
             _helpUrlBuilder = new Mock<IHelpUrlBuilder>();
+            _loggerMock = new Mock<ILogger<ProductsController>>();
 
             _sut = new ProductsController(_productsServiceMock.Object, _helpUrlBuilder.Object, _loggerMock.Object);
         }

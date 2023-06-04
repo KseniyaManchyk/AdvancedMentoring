@@ -5,7 +5,7 @@ namespace CartingService.DAL.Implementation;
 
 public class LiteDBConnectionProvider : ILiteDBConnectionProvider
 {
-    private string _connectionString;
+    private readonly string _connectionString;
 
     public LiteDBConnectionProvider(string connectionString)
     {

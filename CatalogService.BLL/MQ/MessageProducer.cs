@@ -1,11 +1,11 @@
-﻿using RabbitMQ.Client;
-using MessageQueue.Interfaces;
+﻿using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using CatalogService.Domain.ExceptionHandling;
-using Microsoft.Extensions.Logging;
+using MessageQueue.Interfaces;
 using MessageQueue.Models;
-using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 
 namespace CatalogService.BLL.MQ;
 

@@ -8,17 +8,14 @@ namespace CartingService.BLL.Implementation;
 
 public class CartsService : ICartsService
 {
-    IRepository<Cart, string> _cartingRepository;
-    AbstractValidator<Cart> _cartValidator;
-    AbstractValidator<Item> _itemValidator;
+    private readonly IRepository<Cart, string> _cartingRepository;
+    private readonly AbstractValidator<Item> _itemValidator;
 
     public CartsService(
         IRepository<Cart, string> cartingRepository,
-        AbstractValidator<Cart> cartValidator,
         AbstractValidator<Item> itemValidator)
     {
         _cartingRepository = cartingRepository;
-        _cartValidator = cartValidator;
         _itemValidator = itemValidator;
     }
 

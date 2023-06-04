@@ -5,7 +5,8 @@ namespace MessageQueue.Implementation;
 
 public class RabbitMQConnectionProvider : IRabbitMQConnectionProvider
 {
-    private ConnectionFactory _connectionFactory;
+    private readonly ConnectionFactory _connectionFactory;
+
     private IConnection _connection;
     private IModel _model;
 
@@ -13,7 +14,7 @@ public class RabbitMQConnectionProvider : IRabbitMQConnectionProvider
     {
         _connectionFactory = new ConnectionFactory
         {
-            Uri = new Uri(connectionString)
+            Uri = new Uri(connectionString),
         };
     }
 

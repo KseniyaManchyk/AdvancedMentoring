@@ -12,6 +12,7 @@ namespace CartingService.WebApi.Tests
         public CartsControllerTests()
         {
             _cartsServiceMock = new Mock<ICartsService>();
+            _loggerMock = new Mock<ILogger<CartsController>>();
 
             _sut = new CartsController(_cartsServiceMock.Object, _loggerMock.Object);
         }
