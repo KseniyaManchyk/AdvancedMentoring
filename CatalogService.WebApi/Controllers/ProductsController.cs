@@ -41,6 +41,21 @@ namespace CatalogService.WebApi.Controllers
             return Ok(products);
         }
 
+        [HttpGet]
+        [Route("properties")]
+        public async Task<ActionResult<IEnumerable<Product>>> GetItemProperties(int itemId)
+        {
+            _logger.LogInformation("Start getting item properties.");
+
+            return Ok(new Dictionary<string, string>
+            {
+                { "id", itemId.ToString() },
+                { "prop1", "prop1 value" },
+                { "prop2", "prop2 value" },
+                { "prop3", "prop3 value" },
+            });
+        }
+
         [HttpPost]
         [Authorize(Roles = "Manager")]
         public async Task<ActionResult> Post(Product product)
