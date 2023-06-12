@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Cache.CacheManager;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -9,7 +11,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
-//builder.WebHost.UseUrls("https://localhost:9000");
+builder.Services.AddOcelot().AddCacheManager(x =>
+{
+    x.WithDictionaryHandle();
+});
 
 //builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen(option =>
@@ -49,7 +54,7 @@ var app = builder.Build();
 //}
 
 app.UseHttpsRedirection();
-app.UseOcelot();
+await app.UseOcelot();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

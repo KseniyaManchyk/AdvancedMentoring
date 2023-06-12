@@ -3,79 +3,129 @@
     {
       "DownstreamPathTemplate": "/api/v2/carts",
       "DownstreamScheme": "https",
-      "DownstreamHost": "localhost",
-      "DownstreamPort": 7221,
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7221
+        }
+      ],
       "UpstreamPathTemplate": "/carts",
-      "UpstreamHttpMethod": [ "GET" ]
-    },
-    //{
-    //  "DownstreamPathTemplate": "/api/v1/carts/{id}",
-    //  "DownstreamScheme": "https",
-    //  "DownstreamHost": "localhost",
-    //  "DownstreamPort": 7221,
-    //  "UpstreamPathTemplate": "/carts/{id}",
-    //  "UpstreamHttpMethod": [ "GET" ],
-    //  "AuthenticationOptions": {
-    //    "AuthenticationProviderKey": "Bearer",
-    //    "AllowedScopes": []
-    //  }
-    //},
-    //{
-    //  "DownstreamPathTemplate": "/api/{version}/{everything}",
-    //  "DownstreamScheme": "https",
-    //  "DownstreamHost": "localhost",
-    //  "DownstreamPort": 7221,
-    //  "UpstreamPathTemplate": "/carts/{everything}",
-    //  "UpstreamHttpMethod": [ "GET", "POST", "DELETE" ],
-    //  "AuthenticationOptions": {
-    //    "AuthenticationProviderKey": "Bearer",
-    //    "AllowedScopes": []
-    //  }
-    //},
-    {
-      "DownstreamPathTemplate": "/categories",
-      "DownstreamScheme": "https",
-      "DownstreamHost": "localhost",
-      "DownstreamPort": 7195,
-      "UpstreamPathTemplate": "/categories",
       "UpstreamHttpMethod": [ "GET" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
-    //{
-    //  "DownstreamPathTemplate": "/api/categories/{everything}",
-    //  "DownstreamScheme": "https",
-    //  "DownstreamHost": "localhost",
-    //  "DownstreamPort": 7195,
-    //  "UpstreamPathTemplate": "/categories/{everything}",
-    //  "UpstreamHttpMethod": [ "POST", "PUT", "DELETE" ],
-    //  "AuthenticationOptions": {
-    //    "AuthenticationProviderKey": "Bearer",
-    //    "AllowedScopes": []
-    //  }
-    //},
-    //{
-    //  "DownstreamPathTemplate": "/api/products",
-    //  "DownstreamScheme": "https",
-    //  "DownstreamPort": 7195,
-    //  "DownstreamHost": "localhost",
-    //  "UpstreamPathTemplate": "/products",
-    //  "UpstreamHttpMethod": [ "GET" ]
-    //},
-    //{
-    //  "DownstreamPathTemplate": "/api/products/{everything}",
-    //  "DownstreamScheme": "https",
-    //  "DownstreamHost": "localhost",
-    //  "DownstreamPort": 7195,
-    //  "UpstreamPathTemplate": "/products/{everything}",
-    //  "UpstreamHttpMethod": [ "POST", "PUT", "DELETE" ],
-    //  "AuthenticationOptions": {
-    //    "AuthenticationProviderKey": "Bearer",
-    //    "AllowedScopes": []
-    //  }
-    //}
+    {
+      "DownstreamPathTemplate": "/api/v1/carts/{everything}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7221
+        }
+      ],
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/carts/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/categories",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7195
+        }
+      ],
+      "UpstreamPathTemplate": "/categories",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 60 },
+      "Key": "categories"
+    },
+    {
+      "DownstreamPathTemplate": "/categories",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7195
+        }
+      ],
+      "UpstreamPathTemplate": "/categories",
+      "UpstreamHttpMethod": [ "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/products",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7195
+        }
+      ],
+      "UpstreamPathTemplate": "/products",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 60 }
+    },
+    {
+      "DownstreamPathTemplate": "/products",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7195
+        }
+      ],
+      "UpstreamPathTemplate": "/products",
+      "UpstreamHttpMethod": [ "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/products/properties",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7195
+        }
+      ],
+      "UpstreamPathTemplate": "/properties/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 60 },
+      "Key": "properties"
+    }
+  ],
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "categories",
+        "properties"
+      ],
+      "UpstreamPathTemplate": "/aggregated/{id}"
+    }
   ],
   "GlobalConfiguration": {
     "RequestIdKey": "OcRequestId",
